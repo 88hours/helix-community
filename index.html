@@ -112,7 +112,7 @@
       </h1>
 
       <p class="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-        Helix is an open-source autonomous incident response pipeline. A crash hits Sentry or Rollbar — Helix diagnoses it, generates a failing test, and posts a minimal fix suggestion to the GitHub Issue. Your team reviews and acts in Slack. Nothing changes without your sign-off.
+        Helix gives your production system the ability to fix itself. A crash hits Sentry — Helix diagnoses it, writes a failing test, fixes the root cause, and opens a pull request. Your team approves in Slack. Nothing merges without your sign-off.
       </p>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -333,6 +333,11 @@
             <tr>
               <td class="px-4 sm:px-6 py-3 text-gray-300">Redis Pub/Sub event bus</td>
               <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Redis Streams for event persistence</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">-</td>
               <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
             </tr>
             <tr>
