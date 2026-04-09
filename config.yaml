@@ -10,11 +10,21 @@
 # LLM
 # ---------------------------------------------------------------------------
 #
-# All agents share a single Anthropic model.
-# Overrides: HELIX_MODEL
+# provider: "anthropic" (default) or "ollama"
+#
+# anthropic — uses the Anthropic SDK (ANTHROPIC_API_KEY required)
+#   model:   Anthropic model ID, e.g. "claude-sonnet-4-6"
+#   Overrides: HELIX_PROVIDER, HELIX_MODEL
+#
+# ollama — OpenAI-compatible local inference (no API key required)
+#   model:    Ollama model tag, e.g. "llama3.2", "mistral", "codellama"
+#   base_url: Ollama server URL (default: http://localhost:11434)
+#   Overrides: HELIX_PROVIDER, HELIX_MODEL, HELIX_OLLAMA_BASE_URL
 
 llm:
+  provider: anthropic           # "anthropic" | "ollama"
   model: claude-sonnet-4-6
+  ollama_base_url: http://localhost:11434
 
 # ---------------------------------------------------------------------------
 # Event bus

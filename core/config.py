@@ -5,8 +5,10 @@ Reads settings from config.yaml and applies environment variable overrides.
 No secrets are stored in config.yaml — only the names of the env vars that
 hold them.
 
-LLM model override:
-    HELIX_MODEL              e.g. HELIX_MODEL=claude-haiku-4-5-20251001
+LLM provider/model overrides:
+    HELIX_PROVIDER           "anthropic" | "ollama"
+    HELIX_MODEL              e.g. HELIX_MODEL=claude-haiku-4-5-20251001 or llama3.2
+    HELIX_OLLAMA_BASE_URL    e.g. http://localhost:11434  (ollama only)
 
 Redis URL:
     REDIS_URL                e.g. redis://localhost:6379
@@ -44,7 +46,9 @@ _CONFIG_PATH = Path(__file__).parent.parent / "config.yaml"
 @dataclass
 class LLMConfig:
     """Shared LLM settings used by all agents."""
-    model: str      # model identifier, e.g. "claude-sonnet-4-6"
+    provider: str   # "anthropic" | "ollama"
+    model: str      # model identifier, e.g. "claude-sonnet-4-6" or "llama3.2"
+    ollama_base_url: str  # Ollama server URL (ignored when provider is "anthropic")
 
 
 @dataclass
@@ -107,14 +111,26 @@ def get_llm_config() -> LLMConfig:
     Return the shared LLM configuration used by all agents.
 
     Resolution order (highest wins):
-      1. Environment variable HELIX_MODEL
-      2. config.yaml llm.model
+      1. Environment variables: HELIX_PROVIDER, HELIX_MODEL, HELIX_OLLAMA_BASE_URL
+      2. config.yaml: llm.provider, llm.model, llm.ollama_base_url
     """
     raw = _load_yaml()
-    model = os.environ.get("HELIX_MODEL") or raw.get("llm", {}).get("model", "")
+    llm = raw.get("llm", {})
+
+    provider = os.environ.get("HELIX_PROVIDER") or llm.get("provider", "anthropic")
+    if provider not in ("anthropic", "ollama"):
+        raise ValueError(f"Unknown LLM provider '{provider}'. Must be 'anthropic' or 'ollama'.")
+
+    model = os.environ.get("HELIX_MODEL") or llm.get("model", "")
     if not model:
         raise ValueError("No LLM model configured. Set llm.model in config.yaml or HELIX_MODEL env var.")
-    return LLMConfig(model=model)
+
+    ollama_base_url = (
+        os.environ.get("HELIX_OLLAMA_BASE_URL")
+        or llm.get("ollama_base_url", "http://localhost:11434")
+    )
+
+    return LLMConfig(provider=provider, model=model, ollama_base_url=ollama_base_url)
 
 
 def get_redis_url() -> str:
