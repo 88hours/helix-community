@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Helix — Autonomous Incident Response</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="description" content="Helix is an open-source autonomous incident response pipeline. A crash hits Sentry or Rollbar — Helix writes the test, fixes the bug, opens the PR, and waits for your approval." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#6366f1',
+            'brand-dark': '#4f46e5',
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .card-glow:hover {
+      box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.3), 0 8px 32px rgba(99, 102, 241, 0.12);
+    }
+    .code-block {
+      background: #0d1117;
+      border: 1px solid #21262d;
+    }
+    #nav-menu { display: none; }
+    #nav-menu.open { display: flex; }
+  </style>
+</head>
+<body class="bg-gray-950 text-gray-100 antialiased">
+
+  <!-- Nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-gray-800/60 bg-gray-950/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+      <span class="font-bold text-lg tracking-tight">
+        <span class="gradient-text">Helix</span>
+      </span>
+
+      <div class="hidden md:flex items-center gap-6 text-sm text-gray-400">
+        <a href="#how-it-works" class="hover:text-white transition-colors">How it works</a>
+        <a href="#features" class="hover:text-white transition-colors">Features</a>
+        <a href="#community-vs-cloud" class="hover:text-white transition-colors">Community vs Cloud</a>
+        <a href="https://github.com/88hours/helix"
+           class="flex items-center gap-2 text-white bg-brand hover:bg-brand-dark px-3 py-1.5 rounded-md transition-colors font-medium">
+          View on GitHub
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="flex md:hidden items-center gap-3">
+        <a href="https://github.com/88hours/helix"
+           class="flex items-center gap-1.5 text-white bg-brand hover:bg-brand-dark px-3 py-1.5 rounded-md transition-colors text-sm font-medium">
+          GitHub
+        </a>
+        <button id="nav-toggle" aria-label="Toggle menu"
+                class="p-1.5 text-gray-400 hover:text-white transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="nav-menu"
+         class="md:hidden flex-col border-t border-gray-800/60 bg-gray-950/95 px-4 py-3 gap-1">
+      <a href="#how-it-works" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-lg transition-colors">How it works</a>
+      <a href="#features" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-lg transition-colors">Features</a>
+      <a href="#community-vs-cloud" class="block px-3 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-800/60 rounded-lg transition-colors">Community vs Cloud</a>
+    </div>
+  </nav>
+
+  <script>
+    document.getElementById('nav-toggle').addEventListener('click', function() {
+      document.getElementById('nav-menu').classList.toggle('open');
+    });
+    document.querySelectorAll('#nav-menu a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.getElementById('nav-menu').classList.remove('open');
+      });
+    });
+  </script>
+
+  <!-- Hero -->
+  <section class="pt-28 sm:pt-32 pb-20 sm:pb-24 px-4 sm:px-6 text-center">
+    <div class="max-w-4xl mx-auto">
+      <div class="inline-flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-8">
+        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+        Open source — MIT licence
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 tracking-tight">
+        Crash to pull request.<br />
+        <span class="gradient-text">Fully automated.</span>
+      </h1>
+
+      <p class="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+        Helix is an open-source autonomous incident response pipeline. A crash hits Sentry or Rollbar — Helix diagnoses it, generates a failing test, and posts a minimal fix suggestion to the GitHub Issue. Your team reviews and acts in Slack. Nothing changes without your sign-off.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="https://github.com/88hours/helix"
+           class="flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors text-sm">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          Star on GitHub
+        </a>
+        <a href="#how-it-works"
+           class="flex items-center gap-2 border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white font-medium px-6 py-3 rounded-lg transition-colors text-sm">
+          See how it works
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Quick start -->
+      <div class="mt-12 code-block rounded-xl overflow-hidden text-left max-w-2xl mx-auto">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-gray-800">
+          <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+          <span class="ml-2 text-xs text-gray-500 font-mono">quick start</span>
+        </div>
+        <div class="p-4 font-mono text-sm text-gray-300 space-y-1">
+          <p><span class="text-gray-600">$</span> git clone https://github.com/88hours/helix</p>
+          <p><span class="text-gray-600">$</span> cp .env.example .env  <span class="text-gray-600"># add your keys</span></p>
+          <p><span class="text-gray-600">$</span> docker compose up --build</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pipeline diagram -->
+  <section id="how-it-works" class="py-16 sm:py-24 px-4 sm:px-6 border-t border-gray-800/60">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4">How it works</h2>
+        <p class="text-gray-400 text-base sm:text-lg">Four autonomous agents. One human review. From crash to fix suggestion in minutes.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div class="text-xs text-indigo-400 font-mono font-medium mb-2">01</div>
+          <h3 class="font-semibold mb-2">Crash Handler</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Receives Sentry or Rollbar webhooks, classifies severity, detects the application language, and produces a structured crash report.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+            </svg>
+          </div>
+          <div class="text-xs text-purple-400 font-mono font-medium mb-2">02</div>
+          <h3 class="font-semibold mb-2">QA Agent</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Deduplicates against open GitHub Issues. Clones the repo, reads relevant source files, and generates a failing test that asserts the correct behaviour — not that the crash occurs. Retried if the test assertion is wrong.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+            </svg>
+          </div>
+          <div class="text-xs text-emerald-400 font-mono font-medium mb-2">03</div>
+          <h3 class="font-semibold mb-2">Dev Agent</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Reads the relevant source files from GitHub, calls the LLM to generate a minimal fix suggestion, and posts it as a comment on the GitHub Issue created by the QA Agent.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="w-8 h-8 bg-pink-500/20 rounded-lg flex items-center justify-center mb-4">
+            <svg class="w-4 h-4 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+            </svg>
+          </div>
+          <div class="text-xs text-pink-400 font-mono font-medium mb-2">04</div>
+          <h3 class="font-semibold mb-2">Notifier Agent</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Sends a Slack notification when a fix suggestion is ready, including the GitHub Issue link and full crash context for your team to review.</p>
+        </div>
+
+      </div>
+
+      <div class="card-glow bg-gray-900/60 border border-indigo-500/20 rounded-xl p-5 sm:p-6 transition-all duration-200">
+        <div class="flex items-start gap-4">
+          <div class="w-8 h-8 bg-indigo-500/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="text-xs text-indigo-400 font-mono font-medium mb-1">05 — Human review</div>
+            <h3 class="font-semibold mb-1">Your team reviews the fix in Slack</h3>
+            <p class="text-sm text-gray-400 leading-relaxed">Helix posts the fix suggestion and GitHub Issue link to Slack. Your team reviews the suggested change and applies it. Nothing changes in production without your decision.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features (community) -->
+  <section id="features" class="py-16 sm:py-24 px-4 sm:px-6 border-t border-gray-800/60">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4">What's in the community version</h2>
+        <p class="text-gray-400 text-base sm:text-lg">Everything you need to run autonomous incident response on your own infrastructure.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="text-2xl mb-3">🧪</div>
+          <h3 class="font-semibold mb-2">Correct-behaviour tests</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">The QA Agent writes tests that assert what the function <em>should return</em> after the fix, not that the crash occurs. Validated and retried if the assertion is wrong.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="text-2xl mb-3">🌐</div>
+          <h3 class="font-semibold mb-2">Multi-language</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Python, JavaScript, TypeScript, Ruby, Java, Kotlin, and Go. Stack trace parsing, test generation, and fix commands are all language-aware.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="text-2xl mb-3">✅</div>
+          <h3 class="font-semibold mb-2">Human review gate</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Every fix suggestion is posted to Slack for your team to review. Nothing changes in production without a human decision.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="text-2xl mb-3">🎫</div>
+          <h3 class="font-semibold mb-2">Smart deduplication</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Checks open GitHub Issues before running the pipeline. If the bug is known, skips straight to a Slack notification and prompts you to approve any pending PR.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="text-2xl mb-3">📡</div>
+          <h3 class="font-semibold mb-2">Sentry + Rollbar</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">Receives webhooks from Sentry and Rollbar. HMAC-verified on every request.</p>
+        </div>
+
+        <div class="card-glow bg-gray-900 border border-gray-800 rounded-xl p-5 sm:p-6 transition-all duration-200">
+          <div class="text-2xl mb-3">📦</div>
+          <h3 class="font-semibold mb-2">Docker Compose</h3>
+          <p class="text-sm text-gray-400 leading-relaxed">One command spins up all four agents and Redis. Deploy anywhere Docker runs — bare metal, VMs, Railway, Fly.io, or AWS ECS.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Community vs Cloud -->
+  <section id="community-vs-cloud" class="py-16 sm:py-24 px-4 sm:px-6 border-t border-gray-800/60">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4">Community vs Helix Cloud</h2>
+        <p class="text-gray-400 text-base sm:text-lg">
+          The community version is open source and self-hosted. Helix Cloud adds a managed dashboard,
+          per-project credentials, and enterprise observability on top.
+        </p>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-gray-800">
+              <th class="text-left px-4 sm:px-6 py-4 text-gray-400 font-medium w-1/2">Feature</th>
+              <th class="text-center px-4 sm:px-6 py-4 font-semibold text-emerald-400 w-1/4">
+                Community
+                <div class="text-xs font-normal text-gray-500 mt-0.5">Open source · Self-hosted</div>
+              </th>
+              <th class="text-center px-4 sm:px-6 py-4 font-semibold text-indigo-400 w-1/4">
+                Helix Cloud
+                <div class="text-xs font-normal text-gray-500 mt-0.5">Managed · Multi-project</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-800/60">
+
+            <!-- Core pipeline -->
+            <tr class="bg-gray-900/30">
+              <td colspan="3" class="px-4 sm:px-6 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Core pipeline</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Crash Handler Agent (Sentry + Rollbar)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">QA Agent — test generation &amp; deduplication</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Dev Agent — fix suggestion posted to GitHub Issue</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Notifier Agent — Slack approval &amp; escalation</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Multi-language support (Python, JS, Ruby, Java, Go)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Redis Pub/Sub event bus</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+
+            <!-- Hosting & config -->
+            <tr class="bg-gray-900/30">
+              <td colspan="3" class="px-4 sm:px-6 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Hosting &amp; configuration</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Self-hosted (Docker Compose, Railway, Fly.io, ECS)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Global env var configuration</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Managed hosting (zero ops)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Per-project webhook URLs</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Per-project credentials (API keys, Slack, Rollbar)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">GitHub App integration (scoped installation tokens)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+
+            <!-- Dashboard & auth -->
+            <tr class="bg-gray-900/30">
+              <td colspan="3" class="px-4 sm:px-6 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Dashboard &amp; authentication</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">React dashboard with live incident stream</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Auth0 authentication (GitHub OAuth)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Project wizard for onboarding new repos</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+
+            <!-- Observability -->
+            <tr class="bg-gray-900/30">
+              <td colspan="3" class="px-4 sm:px-6 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Observability</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Structured JSON logging</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-emerald-400 text-lg">✓</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">OpenTelemetry distributed tracing</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">LangSmith LLM tracing &amp; eval suite</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+            <tr>
+              <td class="px-4 sm:px-6 py-3 text-gray-300">Automated CI evals (fails if agent score &lt; 80%)</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-gray-600 text-lg">—</td>
+              <td class="px-4 sm:px-6 py-3 text-center text-indigo-400 text-lg">✓</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Language support -->
+  <section class="py-16 sm:py-24 px-4 sm:px-6 border-t border-gray-800/60">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-4">Language support</h2>
+      <p class="text-gray-400 mb-10 sm:mb-12">Detected automatically from the Sentry or Rollbar payload.</p>
+
+      <div class="code-block rounded-xl overflow-hidden">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-gray-800">
+          <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+          <span class="ml-2 text-xs text-gray-500 font-mono">supported languages</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-left border-b border-gray-800">
+                <th class="px-4 sm:px-6 py-3 text-gray-400 font-medium whitespace-nowrap">Language</th>
+                <th class="px-4 sm:px-6 py-3 text-gray-400 font-medium whitespace-nowrap">Test framework</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-800/60">
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">Python</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">pytest</td></tr>
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">JavaScript</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">jest</td></tr>
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">TypeScript</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">jest</td></tr>
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">Ruby</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">rspec</td></tr>
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">Java</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">junit</td></tr>
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">Kotlin</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">junit</td></tr>
+              <tr><td class="px-4 sm:px-6 py-3 font-medium">Go</td><td class="px-4 sm:px-6 py-3 text-gray-400 font-mono text-xs">go test</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-800/60 py-10 sm:py-12 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-4 text-sm text-gray-500">
+        <span class="font-semibold text-gray-400">Helix</span>
+        <span class="text-gray-600">Community Edition</span>
+        <span class="text-gray-700">MIT</span>
+      </div>
+      <a href="https://github.com/88hours/helix" class="text-xs text-gray-600 hover:text-gray-400 transition-colors">github.com/88hours/helix</a>
+    </div>
+  </footer>
+
+</body>
+</html>

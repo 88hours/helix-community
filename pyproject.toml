@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "helix"
+version = "1.0.0"
+description = "Autonomous incident response — Sentry/Rollbar crash to merged PR in under 10 minutes"
+requires-python = ">=3.12"
+dependencies = [
+    # Pydantic — shared data models across all agents
+    "pydantic>=2.10",
+
+    # Config parsing
+    "pyyaml>=6.0.2",
+
+    # Redis — state store and Pub/Sub event bus
+    "redis>=5.2",
+
+    # HTTP client — used by all integration wrappers (GitHub, Slack)
+    "httpx>=0.28",
+
+    # Crash Handler webhook server
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+
+    # LLM backends
+    "anthropic>=0.40",        # crash_handler, qa, notifier agents (Anthropic SDK)
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "respx>=0.22",
+]
+
+[tool.setuptools.packages.find]
+include = ["agents*", "core*", "integrations*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "basic"

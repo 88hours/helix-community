@@ -1,0 +1,124 @@
+# Helix – Configuration
+#
+# This file is the source of truth for all non-secret configuration.
+# Secrets (API keys, tokens) must be set as environment variables — never
+# committed to this file.
+#
+# All values here can be overridden by environment variables at runtime.
+
+# ---------------------------------------------------------------------------
+# LLM
+# ---------------------------------------------------------------------------
+#
+# All agents share a single Anthropic model.
+# Overrides: HELIX_MODEL
+
+llm:
+  model: claude-sonnet-4-6
+
+# ---------------------------------------------------------------------------
+# Event bus
+# ---------------------------------------------------------------------------
+#
+# Helix uses Redis Pub/Sub for all inter-agent event delivery.
+
+events:
+  backend: redis
+
+# ---------------------------------------------------------------------------
+# Redis state store
+# ---------------------------------------------------------------------------
+#
+# Redis is used for shared incident state and Pub/Sub event delivery.
+# All incident keys are namespaced by incident_id with a 7-day TTL.
+#
+# Override: REDIS_URL
+
+redis:
+  url_env: REDIS_URL
+  ttl_days: 7
+
+# ---------------------------------------------------------------------------
+# Rollbar integration
+# ---------------------------------------------------------------------------
+#
+# Helix verifies inbound Rollbar webhooks by comparing data.access_token in
+# the payload against the project read token stored in ROLLBAR_ACCESS_TOKEN.
+#
+# Override: ROLLBAR_ACCESS_TOKEN
+
+rollbar:
+  access_token_env: ROLLBAR_ACCESS_TOKEN
+
+# ---------------------------------------------------------------------------
+# Sentry integration
+# ---------------------------------------------------------------------------
+#
+# Helix verifies inbound Sentry webhooks using HMAC-SHA256 with the client
+# secret from the Sentry integration settings page.
+#
+# The secret is optional — if not set, signature verification is skipped
+# (not recommended in production).
+#
+# Override: SENTRY_WEBHOOK_SECRET
+
+sentry:
+  webhook_secret_env: SENTRY_WEBHOOK_SECRET
+
+# ---------------------------------------------------------------------------
+# GitHub integration
+# ---------------------------------------------------------------------------
+#
+# target_repo: the "owner/name" of the repo Helix is fixing bugs in.
+#   e.g. "acme/backend"
+#   Override: HELIX_GITHUB_REPO
+#
+# base_branch: the branch PRs are opened against (usually "main").
+#   Override: HELIX_GITHUB_BASE_BRANCH
+#
+# token_env: env var holding the GitHub personal access token.
+#   Required scopes: repo (read + write + pull requests + issues)
+
+github:
+  target_repo: ""          # set to "owner/repo" or use HELIX_GITHUB_REPO env var
+  base_branch: main
+  token_env: GITHUB_TOKEN
+
+# ---------------------------------------------------------------------------
+# Slack integration
+# ---------------------------------------------------------------------------
+#
+# Used by the Notifier Agent to post PR approval requests and escalations.
+#
+# approval_channel: the Slack channel ID (C...) or name (#channel).
+# token_env: env var holding the Slack bot token (xoxb-...).
+# signing_secret_env: used to verify Slack button-click payloads.
+#
+# All Slack settings are optional — if not configured, Slack notifications
+# are skipped with a warning.
+
+slack:
+  token_env: SLACK_BOT_TOKEN
+  signing_secret_env: SLACK_SIGNING_SECRET
+  approval_channel_env: SLACK_APPROVAL_CHANNEL
+
+# ---------------------------------------------------------------------------
+# Pipeline behaviour
+# ---------------------------------------------------------------------------
+
+pipeline:
+  # Maximum source files the QA Agent reads when generating the test case.
+  # Override: HELIX_QA_MAX_SOURCE_FILES
+  qa_max_source_files: 8
+
+  # Maximum characters read per source file by the QA Agent.
+  # Override: HELIX_QA_MAX_FILE_CHARS
+  qa_max_file_chars: 4000
+
+# ---------------------------------------------------------------------------
+# Server
+# ---------------------------------------------------------------------------
+
+server:
+  host: 0.0.0.0
+  port: 8000
