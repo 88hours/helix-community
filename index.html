@@ -166,7 +166,7 @@
             </svg>
           </div>
           <div class="text-xs text-indigo-400 font-mono font-medium mb-2">01</div>
-          <h3 class="font-semibold mb-2">Crash Handler</h3>
+          <h3 class="font-semibold mb-2">Sentinel — Crash Handler Agent</h3>
           <p class="text-sm text-gray-400 leading-relaxed">Receives Sentry or Rollbar webhooks, classifies severity, detects the application language, and produces a structured crash report.</p>
         </div>
 
@@ -177,7 +177,7 @@
             </svg>
           </div>
           <div class="text-xs text-purple-400 font-mono font-medium mb-2">02</div>
-          <h3 class="font-semibold mb-2">QA Agent</h3>
+          <h3 class="font-semibold mb-2">Regen - QA Agent</h3>
           <p class="text-sm text-gray-400 leading-relaxed">Deduplicates against open GitHub Issues. Clones the repo, reads relevant source files, and generates a failing test that asserts the correct behaviour — not that the crash occurs. Retried if the test assertion is wrong.</p>
         </div>
 
@@ -188,7 +188,7 @@
             </svg>
           </div>
           <div class="text-xs text-emerald-400 font-mono font-medium mb-2">03</div>
-          <h3 class="font-semibold mb-2">Dev Agent</h3>
+          <h3 class="font-semibold mb-2">Forge - Dev Agent</h3>
           <p class="text-sm text-gray-400 leading-relaxed">Reads the relevant source files from GitHub, calls the LLM to generate a minimal fix suggestion, and posts it as a comment on the GitHub Issue created by the QA Agent.</p>
         </div>
 
@@ -199,7 +199,7 @@
             </svg>
           </div>
           <div class="text-xs text-pink-400 font-mono font-medium mb-2">04</div>
-          <h3 class="font-semibold mb-2">Notifier Agent</h3>
+          <h3 class="font-semibold mb-2">Pulse - Notifier Agent</h3>
           <p class="text-sm text-gray-400 leading-relaxed">Sends a Slack notification when a fix suggestion is ready, including the GitHub Issue link and full crash context for your team to review.</p>
         </div>
 
