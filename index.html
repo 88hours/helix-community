@@ -269,6 +269,18 @@
         </div>
 
       </div>
+
+      <!-- Not included callout -->
+      <div class="mt-10 sm:mt-12 max-w-5xl mx-auto border border-gray-700/60 rounded-xl p-5 sm:p-6 bg-gray-900/40">
+        <h3 class="text-sm font-semibold text-gray-300 mb-4">Not included in this version</h3>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-500">
+          <li class="flex items-start gap-2"><span class="text-gray-700 mt-0.5">—</span>TDD loop — the Dev Agent does not clone the repo, run tests, or iterate to a passing suite</li>
+          <li class="flex items-start gap-2"><span class="text-gray-700 mt-0.5">—</span>Automated PR creation — fix suggestions are posted as Issue comments, not merged code</li>
+          <li class="flex items-start gap-2"><span class="text-gray-700 mt-0.5">—</span>Per-agent model configuration — all agents share a single model set via <code class="font-mono text-xs text-gray-400">HELIX_MODEL</code></li>
+          <li class="flex items-start gap-2"><span class="text-gray-700 mt-0.5">—</span>OpenRouter and non-Anthropic providers — only the Anthropic API is supported</li>
+        </ul>
+      </div>
+
     </div>
   </section>
 
