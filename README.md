@@ -33,7 +33,7 @@ Then point your Sentry or Rollbar webhook at `http://your-host:8000/webhook/sent
 ## Requirements
 
 - Docker + Docker Compose
-- An [Anthropic API key](https://console.anthropic.com/)
+- An [Anthropic API key](https://console.anthropic.com/) **or** a locally running [Ollama](https://ollama.com/) instance
 - A GitHub personal access token with `repo` scope
 - A Sentry or Rollbar account (or both)
 - A Slack bot with `chat:write` scope (strongly recommended)
@@ -46,7 +46,7 @@ All configuration is via environment variables. Copy `.env.example` to `.env` an
 
 | Variable | Required | Description |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Yes | Anthropic API key |
+| `ANTHROPIC_API_KEY` | Anthropic only | Anthropic API key |
 | `REDIS_URL` | Yes | Redis connection URL |
 | `GITHUB_TOKEN` | Yes | GitHub PAT with repo scope |
 | `HELIX_GITHUB_REPO` | Yes | Repo to fix bugs in (`owner/name`) |
@@ -56,13 +56,24 @@ All configuration is via environment variables. Copy `.env.example` to `.env` an
 | `SLACK_SIGNING_SECRET` | Recommended | Slack app signing secret |
 | `SLACK_APPROVAL_CHANNEL` | Recommended | Channel for Slack notifications |
 
-### Model
+### Model & provider
 
-All agents share a single model set in `config.yaml`. Override at runtime:
+All agents share a single LLM configuration set in `config.yaml`. Two providers are supported:
 
+**Anthropic (default)**
 ```bash
+HELIX_PROVIDER=anthropic
 HELIX_MODEL=claude-sonnet-4-6
 ```
+
+**Ollama (local)**
+```bash
+HELIX_PROVIDER=ollama
+HELIX_MODEL=llama3.2
+HELIX_OLLAMA_BASE_URL=http://localhost:11434   # optional, this is the default
+```
+
+Ollama uses the standard OpenAI-compatible `/v1/chat/completions` endpoint — no API key required.
 
 ---
 
@@ -148,6 +159,14 @@ python -m agents.qa.main                          # QA agent
 python -m agents.dev.main                         # Dev agent
 python -m agents.notifier.main                    # Notifier
 ```
+
+---
+
+## Contact
+
+General enquiries, bug reports, or feedback — [hello@88hours.io](mailto:hello@88hours.io)
+
+Interested in Helix Cloud (managed hosting, dashboard, enterprise features)? [Talk to us](mailto:hello@88hours.io?subject=Helix%20Cloud%20enquiry).
 
 ---
 
