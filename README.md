@@ -1,5 +1,8 @@
 # Helix
 
+[![CI](https://github.com/88hours/helix-community/actions/workflows/ci.yml/badge.svg)](https://github.com/88hours/helix-community/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20commercial%20restrictions-blue)](LICENSE)
+
 Autonomous incident response — from production crash to fix suggestion, without waking anyone up.
 
 Helix watches your error tracker. When a bug lands, it writes a failing test and generates a minimal fix suggestion posted directly to the GitHub Issue. Your team reviews and acts in Slack.
@@ -172,4 +175,11 @@ Interested in Helix Cloud (managed hosting, dashboard, enterprise features)? [Ta
 
 ## Licence
 
-MIT — see [LICENSE](LICENSE).
+Helix is licensed under a modified Apache 2.0 licence with additional commercial restrictions.
+Key points:
+
+- **Personal and commercial self-hosted use** is permitted.
+- **Multi-tenant deployments** (one workspace per tenant) require a commercial licence from 88hours.
+- **Dashboard branding** (logo / copyright in `dashboard/` or `web/`) must not be removed.
+
+See [LICENSE](LICENSE) for full terms. For commercial licensing, contact [hello@88hours.io](mailto:hello@88hours.io).
