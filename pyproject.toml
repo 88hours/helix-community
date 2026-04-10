@@ -26,6 +26,9 @@ dependencies = [
 
     # LLM backends
     "anthropic>=0.40",        # crash_handler, qa, notifier agents (Anthropic SDK)
+
+    # Email integration
+    "aiosmtplib>=3.0",
 ]
 
 [project.optional-dependencies]
