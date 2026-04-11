@@ -416,7 +416,7 @@
               </div>
               <div class="text-xs text-emerald-500 font-mono font-bold mb-1.5 tracking-wide">03 · Forge</div>
               <h3 class="font-bold text-sm mb-2">Dev Agent</h3>
-              <p class="text-xs text-stone-500 leading-relaxed">Reads source files, calls the LLM to generate a minimal fix, posts it as a comment on the GitHub Issue.</p>
+              <p class="text-xs text-stone-500 leading-relaxed">Clones the repo, runs the failing test, and uses the Claude Code CLI to iterate a fix up to 3 times. Commits the passing fix and opens a GitHub PR.</p>
             </div>
           </div>
 
@@ -432,7 +432,7 @@
               </div>
               <div class="text-xs text-pink-400 font-mono font-bold mb-1.5 tracking-wide">04 · Pulse</div>
               <h3 class="font-bold text-sm mb-2">Notifier Agent</h3>
-              <p class="text-xs text-stone-500 leading-relaxed">Sends a Slack notification with the fix suggestion, GitHub Issue link, and full crash context.</p>
+              <p class="text-xs text-stone-500 leading-relaxed">Sends a Slack notification with the PR link and crash context. Escalates with full reasoning if the TDD loop exhausts all retries.</p>
             </div>
           </div>
 
@@ -449,7 +449,7 @@
                 <div>
                   <div class="text-xs text-indigo-500 font-mono font-bold mb-1.5 tracking-wide">05 · Human review</div>
                   <h3 class="font-bold mb-2">Your team reviews the fix in Slack</h3>
-                  <p class="text-sm text-stone-500 leading-relaxed">Helix posts the fix suggestion and GitHub Issue link to Slack. Your team reviews and applies it. <strong class="text-gray-700 font-semibold">Nothing changes in production without your decision.</strong></p>
+                  <p class="text-sm text-stone-500 leading-relaxed">Helix posts the PR link to Slack. Your team reviews the diff and approves or dismisses it. <strong class="text-gray-700 font-semibold">Nothing merges without your sign-off.</strong></p>
                 </div>
               </div>
             </div>
@@ -584,14 +584,14 @@
             <tr class="bg-stone-50/60"><td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">Core pipeline</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Crash Handler Agent (Sentry + Rollbar)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">QA Agent — test generation &amp; deduplication</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Dev Agent — fix suggestion posted to GitHub Issue</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
+            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Dev Agent — fix suggestion &amp; TDD loop</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Notifier Agent — Slack approval &amp; escalation</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Multi-language support (Python, JS, Ruby, Java, Go)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Redis Pub/Sub event bus</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Redis Streams — durable event log &amp; incident replay</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Ollama — local LLM support (zero API cost)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">TDD loop — iterate to passing suite</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Automated PR creation from passing fix</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
+            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">TDD loop — iterate to passing suite</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
+            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Automated PR creation from passing fix</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
             <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">OpenRouter &amp; multi-provider LLM support</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
 
             <tr class="bg-stone-50/60"><td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">Hosting &amp; configuration</td></tr>

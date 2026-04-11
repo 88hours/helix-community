@@ -124,3 +124,46 @@ async def read_status(client: redis.Redis, incident_id: str) -> Optional[str]:
     return raw.decode() if isinstance(raw, bytes) else raw
 
 
+# ---------------------------------------------------------------------------
+# Dev Agent iteration counter
+# ---------------------------------------------------------------------------
+
+async def increment_iterations(client: redis.Redis, incident_id: str) -> int:
+    """
+    Increment the Dev Agent retry counter and return the new value.
+
+    The counter starts at 0 and is incremented before each fix attempt,
+    so the first attempt returns 1.  The Dev Agent stops at 3.
+
+    Stored at: helix:incident:{incident_id}:iterations
+
+    Args:
+        client:      Async Redis client.
+        incident_id: The incident being retried.
+
+    Returns:
+        The new iteration count after incrementing.
+    """
+    key = _key(incident_id, "iterations")
+    count = await client.incr(key)
+    await client.expire(key, _TTL_SECONDS)
+    logger.info("iteration incremented", extra={"incident_id": incident_id, "iterations": count})
+    return count
+
+
+async def read_iterations(client: redis.Redis, incident_id: str) -> int:
+    """
+    Read the current Dev Agent iteration count for an incident.
+
+    Args:
+        client:      Async Redis client.
+        incident_id: The incident to look up.
+
+    Returns:
+        The current iteration count, or 0 if the key does not exist.
+    """
+    key = _key(incident_id, "iterations")
+    raw = await client.get(key)
+    if raw is None:
+        return 0
+    return int(raw)

@@ -125,6 +125,15 @@ pipeline:
   # Override: HELIX_QA_MAX_FILE_CHARS
   qa_max_file_chars: 4000
 
+  # Dev Agent TDD loop: maximum fix-and-test attempts before escalating.
+  # Each iteration clones the repo, runs tests, and attempts a fix.
+  dev_max_iterations: 3
+
+  # Hard wall-clock budget (seconds) for the entire TDD loop (clone → fix → PR).
+  # On timeout the incident is escalated the same way as exhausted retries.
+  # Requires the Claude Code CLI to be installed: https://claude.ai/code
+  dev_tdd_timeout: 480
+
 # ---------------------------------------------------------------------------
 # Server
 # ---------------------------------------------------------------------------

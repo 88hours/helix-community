@@ -4,7 +4,9 @@ from unittest.mock import AsyncMock
 
 from core.models import CrashReport, PRResult, QAResult, Severity, TestCase, TestFormat, TicketAction
 from core.state import (
+    increment_iterations,
     read_crash_report,
+    read_iterations,
     read_pr_result,
     read_qa_result,
     read_status,
@@ -152,3 +154,42 @@ async def test_read_status_returns_string_when_already_str(redis):
 async def test_read_status_missing(redis):
     redis.get.return_value = None
     assert await read_status(redis, "inc-001") is None
+
+
+# ---------------------------------------------------------------------------
+# Iteration counter
+# ---------------------------------------------------------------------------
+
+async def test_increment_iterations_returns_new_count(redis):
+    redis.incr.return_value = 1
+    result = await increment_iterations(redis, "inc-001")
+    assert result == 1
+    redis.incr.assert_awaited_once()
+    key = redis.incr.call_args[0][0]
+    assert "inc-001" in key
+    assert "iterations" in key
+
+
+async def test_increment_iterations_sets_ttl(redis):
+    redis.incr.return_value = 2
+    await increment_iterations(redis, "inc-001")
+    redis.expire.assert_awaited_once()
+
+
+async def test_increment_iterations_sequential(redis):
+    redis.incr.side_effect = [1, 2, 3]
+    assert await increment_iterations(redis, "inc-001") == 1
+    assert await increment_iterations(redis, "inc-001") == 2
+    assert await increment_iterations(redis, "inc-001") == 3
+
+
+async def test_read_iterations_returns_count(redis):
+    redis.get.return_value = b"2"
+    result = await read_iterations(redis, "inc-001")
+    assert result == 2
+
+
+async def test_read_iterations_missing_returns_zero(redis):
+    redis.get.return_value = None
+    result = await read_iterations(redis, "inc-001")
+    assert result == 0

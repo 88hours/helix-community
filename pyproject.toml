@@ -4,22 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "helix"
-version = "1.0.0"
-description = "Autonomous incident response — Sentry/Rollbar crash to merged PR in under 10 minutes"
-readme = "README.md"
-license = {file = "LICENSE"}
-authors = [
-  {name = "88hours", email = "hello@88hours.io"},
-]
-keywords = ["incident-response", "llm", "sentry", "rollbar", "github", "slack", "autonomous"]
-classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "Intended Audience :: Developers",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.12",
-  "Topic :: Software Development :: Bug Tracking",
-  "Topic :: System :: Monitoring",
-]
+version = "0.2.0"
+description = "Autonomous incident response — Sentry crash to merged PR in under 10 minutes"
 requires-python = ">=3.12"
 dependencies = [
     # Pydantic — shared data models across all agents
@@ -29,36 +15,51 @@ dependencies = [
     "pyyaml>=6.0.2",
 
     # Redis — state store and Pub/Sub event bus
-    "redis>=5.2",
+    "redis>=5.2",            # asyncio support is built-in since redis-py 5.x
 
-    # HTTP client — used by all integration wrappers (GitHub, Slack)
+    # HTTP client — used by all integration wrappers (GitHub, JIRA, Slack)
     "httpx>=0.28",
 
-    # Crash Handler webhook server
+    # Async SMTP — email notifications
+    "aiosmtplib>=3.0",
+
+    # Crash Handler webhook server + dashboard SSE
     "fastapi>=0.115",
     "uvicorn[standard]>=0.32",
+    "sse-starlette>=2.1",        # Server-Sent Events for the streaming dashboard
 
-    # LLM backends
-    "anthropic>=0.40",        # crash_handler, qa, notifier agents (Anthropic SDK)
+    # Auth0 JWT validation (RS256 via JWKS) + GitHub App JWT signing
+    "PyJWT[crypto]>=2.10",
 
-    # Email integration
-    "aiosmtplib>=3.0",
+    # Postgres — user/project persistent storage
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.29",
+
+    # Error tracking
+    "rollbar>=0.16.0",
+
+    # LLM backends (all imported lazily — only the provider in use needs to be installed)
+    "anthropic>=0.40",        # crash_handler, qa, code_quality agents
+    "openai>=1.55",           # openrouter backend (OpenAI-compatible)
+    "boto3>=1.35",            # eventbridge backend (optional; AWS deployments only)
+    "langsmith>=0.2",         # LLM call tracing and eval suite
+
+    # OpenTelemetry — end-to-end distributed tracing (enabled via OTEL_ENABLED=true)
+    "opentelemetry-api>=1.20",                        # core API; no-op by default when SDK not configured
+    "opentelemetry-sdk>=1.20",                        # SDK: TracerProvider, BatchSpanProcessor
+    "opentelemetry-exporter-otlp-proto-grpc>=1.20",   # OTLP/gRPC exporter (Datadog, Grafana, Jaeger, etc.)
+    "opentelemetry-instrumentation-fastapi>=0.41b0",  # auto-instrument FastAPI (crash handler)
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.3",
     "pytest-asyncio>=0.24",
-    "respx>=0.22",
-    "ruff>=0.9",
+    "respx>=0.22",            # mock httpx calls in integration tests
 ]
 
-[project.urls]
-Homepage = "https://88hours.io"
-Repository = "https://github.com/88hours/helix-community"
-"Bug Tracker" = "https://github.com/88hours/helix-community/issues"
-
 [tool.setuptools.packages.find]
+# Include agents/, core/, integrations/ but not docs/, .venv/, etc.
 include = ["agents*", "core*", "integrations*"]
 
 [tool.pytest.ini_options]
@@ -68,11 +69,3 @@ testpaths = ["tests"]
 [tool.pyright]
 pythonVersion = "3.12"
 typeCheckingMode = "basic"
-
-[tool.ruff]
-target-version = "py312"
-line-length = 100
-
-[tool.ruff.lint]
-select = ["E", "F", "I"]
-ignore = ["E501"]

@@ -16,8 +16,16 @@ Provider/model selection (highest wins):
 All agents call the same function:
 
     response = await complete(agent="crash_handler", prompt="...", system="...")
+
+The Dev Agent's TDD loop uses a separate entry point:
+
+    response = await complete_tdd(prompt="...", cwd="/path/to/repo")
+
+This always invokes the Claude Code CLI as a subprocess inside the cloned
+repo so it can run shell commands (pytest, jest, etc.) to verify fixes.
 """
 
+import asyncio
 import logging
 import os
 
@@ -26,6 +34,11 @@ from core.config import LLMConfig, get_llm_config
 logger = logging.getLogger(__name__)
 
 _MAX_TOKENS = 4096
+
+# Per-call timeout for the claude-code subprocess (10 minutes).
+# The Dev Agent's outer TDD timeout (8 min) fires first on healthy runs;
+# this exists as a hard backstop against a hung subprocess.
+_SUBPROCESS_TIMEOUT = 600
 
 
 # ---------------------------------------------------------------------------
@@ -107,6 +120,72 @@ async def _complete_ollama(
         "output_tokens": usage_raw.get("completion_tokens", 0),
     }
     return text, usage
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# Claude Code backend  (subprocess — Dev Agent TDD loop only)
+# ---------------------------------------------------------------------------
+
+async def _complete_claude_code(prompt: str, cwd: str) -> str:
+    """
+    Invoke the Claude Code CLI as a subprocess inside the cloned repo.
+
+    Args:
+        prompt: Prompt to send to Claude Code.
+        cwd:    Working directory for the subprocess (the cloned repo root).
+
+    Returns:
+        The CLI's stdout as a plain string.
+
+    Raises:
+        RuntimeError: If the subprocess exits non-zero or times out.
+    """
+    try:
+        process = await asyncio.create_subprocess_exec(
+            "claude", "--dangerously-skip-permissions", "-p", prompt,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=cwd,
+        )
+        stdout, stderr = await asyncio.wait_for(
+            process.communicate(), timeout=_SUBPROCESS_TIMEOUT
+        )
+    except asyncio.TimeoutError:
+        try:
+            process.kill()
+        except Exception:
+            pass
+        raise RuntimeError(
+            f"claude-code subprocess timed out after {_SUBPROCESS_TIMEOUT}s"
+        )
+
+    if process.returncode != 0:
+        raise RuntimeError(
+            f"claude-code exited {process.returncode}: {stderr.decode().strip()}"
+        )
+    return stdout.decode()
+
+
+async def complete_tdd(prompt: str, cwd: str) -> str:
+    """
+    Run a TDD fix cycle using the Claude Code CLI inside a cloned repo.
+
+    This is the only function in Helix that invokes the claude-code CLI.
+    It needs to be installed and authenticated on the host machine.
+
+    Args:
+        prompt: TDD prompt built by agents.dev.prompts.build_tdd().
+        cwd:    Path to the cloned repo root.
+
+    Returns:
+        The CLI's stdout — contains a TESTS_PASSED or TESTS_FAILED sentinel.
+    """
+    logger.info("claude-code tdd call", extra={"cwd": cwd})
+    return await _complete_claude_code(prompt, cwd)
 
 
 # ---------------------------------------------------------------------------
