@@ -317,6 +317,12 @@
           Ollama
         </div>
 
+        <!-- Claude Code -->
+        <div class="logo-chip">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><rect width="24" height="24" rx="5" fill="#D97757"/><path d="M7 17l3.5-10h1.2L15 13.5 18.5 7h1.2L16 17h-1.1l-3.4-6.2L8.1 17H7z" fill="white"/></svg>
+          Claude Code
+        </div>
+
       </div>
     </div>
   </div>
@@ -616,6 +622,31 @@
             <tr class="hover:bg-stone-100/60 transition-colors"><td class="px-5 sm:px-6 py-3 font-semibold text-gray-800">Go</td><td class="px-5 sm:px-6 py-3 text-stone-500 font-mono text-xs">go test</td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CLAUDE CODE ─────────────────────────────────────── -->
+  <section class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <span class="section-eyebrow">Contributing</span>
+        <h2 class="text-3xl sm:text-4xl font-black mb-4">Set up in seconds with Claude Code</h2>
+        <p class="text-stone-500 text-base sm:text-lg max-w-xl mx-auto">Helix ships a built-in <a href="https://claude.ai/code" class="text-indigo-600 hover:underline font-medium">Claude Code</a> skill. Open the repo and type <code class="font-mono bg-stone-100 px-1.5 py-0.5 rounded text-sm">/setup</code> — Claude walks you through prerequisites, environment config, and running the test suite interactively.</p>
+      </div>
+      <div class="code-block-dark rounded-2xl overflow-hidden shadow-xl reveal">
+        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/8">
+          <div class="w-3 h-3 rounded-full bg-red-500/70"></div>
+          <div class="w-3 h-3 rounded-full bg-yellow-500/70"></div>
+          <div class="w-3 h-3 rounded-full bg-green-500/70"></div>
+          <span class="ml-2 text-xs text-white/30 font-mono">Claude Code</span>
+        </div>
+        <div class="p-6 font-mono text-sm space-y-3">
+          <p><span class="text-white/30">you</span> <span class="text-white/80">/setup</span></p>
+          <p class="text-white/50 leading-relaxed pl-4 border-l border-white/10">Checking prerequisites... Python 3.12 ✓, Docker ✓, uv ✓<br/>Copying .env.example → .env<br/>Which LLM provider? <span class="text-indigo-400">Anthropic</span> or Ollama?</p>
+          <p><span class="text-white/30">you</span> <span class="text-white/80">Anthropic</span></p>
+          <p class="text-white/50 leading-relaxed pl-4 border-l border-white/10">Set ANTHROPIC_API_KEY in .env, then run:<br/><span class="text-emerald-400">docker compose up --build</span><br/>Once up, run <span class="text-indigo-400">pytest</span> to verify — 18 tests, all passing.</p>
+        </div>
       </div>
     </div>
   </section>

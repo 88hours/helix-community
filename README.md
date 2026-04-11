@@ -29,6 +29,16 @@ cp .env.example .env   # fill in your keys
 docker compose up --build
 ```
 
+## Claude Code
+
+This repo ships a [Claude Code](https://claude.ai/code) skill that walks contributors through local setup interactively. If you have Claude Code installed, open the repo and run:
+
+```
+/setup
+```
+
+Claude will check your prerequisites, help you fill in `.env`, start the stack, and run the test suite — step by step.
+
 Then point your Sentry or Rollbar webhook at `http://your-host:8000/webhook/sentry` (or `/webhook/rollbar`).
 
 ---
