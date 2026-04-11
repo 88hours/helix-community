@@ -1,6 +1,5 @@
 # Helix
 
-[![CI](https://github.com/88hours/helix-community/actions/workflows/ci.yml/badge.svg)](https://github.com/88hours/helix-community/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20commercial%20restrictions-blue)](LICENSE)
 
 Autonomous incident response — from production crash to fix suggestion, without waking anyone up.
