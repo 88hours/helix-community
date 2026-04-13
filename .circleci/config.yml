@@ -7,10 +7,6 @@ version: 2.1
 
 # Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
 # See: https://circleci.com/docs/orbs/use/orb-intro/
-orbs:
-  # See the Python orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
-  python: circleci/python@2.1.1
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
 jobs:
@@ -28,13 +24,11 @@ jobs:
       - run:
           name: Checkout
           command: git clone --filter=blob:none https://github.com/88hours/helix-community.git .
-      - python/install-packages:
-          pkg-manager: pip
-          # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
-          # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
+      - run:
+          name: Install dependencies
+          command: pip install ".[dev]"
       - run:
           name: Run tests
-          # This assumes pytest is installed via the install-package step above
           command: pytest
 
 # Orchestrate jobs using workflows
