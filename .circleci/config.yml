@@ -25,8 +25,9 @@ jobs:
     # Add steps to the job
     # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#steps-overview & https://circleci.com/docs/reference/configuration-reference/#steps
     steps:
-      # Checkout the code as the first step.
-      - checkout
+      - run:
+          name: Checkout
+          command: git clone --filter=blob:none https://github.com/88hours/helix-community.git .
       - python/install-packages:
           pkg-manager: pip
           # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
