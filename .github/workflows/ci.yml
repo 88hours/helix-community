@@ -33,5 +33,4 @@ jobs:
         env:
           REDIS_URL: redis://localhost:6379
           GITHUB_TOKEN: stub-token-for-ci
-          HELIX_GITHUB_REPO: owner/repo
           ANTHROPIC_API_KEY: stub-key-for-ci
