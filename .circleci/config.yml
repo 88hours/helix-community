@@ -1,92 +1,45 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/reference/configuration-reference
+
+# For a detailed guide to building and testing with Python, read the docs:
+# https://circleci.com/docs/language-python/ for more details
 version: 2.1
 
+# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
+# See: https://circleci.com/docs/orbs/use/orb-intro/
 orbs:
-  docker: circleci/docker@2.6
+  # See the Python orb documentation here: https://circleci.com/developer/orbs/orb/circleci/python
+  python: circleci/python@2.1.1
 
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#jobs-overview & https://circleci.com/docs/reference/configuration-reference/#jobs
 jobs:
-  test:
+  build-and-test:
+    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/guides/execution-managed/executor-intro/ & https://circleci.com/docs/reference/configuration-reference/#executor-job
     docker:
+      # Specify the version you desire here
+      # See:https://circleci.com/developer/images/image/cimg/python
       - image: cimg/python:3.12
-      - image: cimg/redis:7.2
+
+    # Add steps to the job
+    # See: https://circleci.com/docs/guides/orchestrate/jobs-steps/#steps-overview & https://circleci.com/docs/reference/configuration-reference/#steps
     steps:
+      # Checkout the code as the first step.
       - checkout
-      - restore_cache:
-          keys:
-            - pip-{{ checksum "pyproject.toml" }}
-      - run:
-          name: Install dependencies
-          command: pip install -e ".[dev]"
-      - save_cache:
-          key: pip-{{ checksum "pyproject.toml" }}
-          paths:
-            - ~/.cache/pip
+      - python/install-packages:
+          pkg-manager: pip
+          # app-dir: ~/project/package-directory/  # If your requirements.txt isn't in the root directory.
+          # pip-dependency-file: test-requirements.txt  # if you have a different name for your requirements file, maybe one that combines your runtime and test requirements.
       - run:
           name: Run tests
-          command: pytest --tb=short
-      - store_test_results:
-          path: test-results
+          # This assumes pytest is installed via the install-package step above
+          command: pytest
 
-  lint:
-    docker:
-      - image: cimg/python:3.12
-    steps:
-      - checkout
-      - run:
-          name: Install pyright
-          command: pip install pyright
-      - run:
-          name: Type check
-          command: pyright
-
-  docker-build-push:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - run:
-          name: Build and push Docker image
-          command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker build -t "$DOCKER_USERNAME/helix:$CIRCLE_SHA1" -t "$DOCKER_USERNAME/helix:latest" .
-            docker push "$DOCKER_USERNAME/helix:$CIRCLE_SHA1"
-            docker push "$DOCKER_USERNAME/helix:latest"
-
-  deploy:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "$SSH_FINGERPRINT"
-      - run:
-          name: Deploy to Linux server
-          command: |
-            ssh -o StrictHostKeyChecking=no "$DEPLOY_USER@$DEPLOY_HOST" \
-              "docker pull $DOCKER_USERNAME/helix:$CIRCLE_SHA1 \
-               && docker stop helix || true \
-               && docker rm helix || true \
-               && docker run -d --name helix --restart unless-stopped \
-                    --env-file /etc/helix/.env \
-                    -p 8000:8000 \
-                    $DOCKER_USERNAME/helix:$CIRCLE_SHA1"
-
+# Orchestrate jobs using workflows
+# See: https://circleci.com/docs/guides/orchestrate/workflows/ & https://circleci.com/docs/reference/configuration-reference/#workflows
 workflows:
-  ci:
+  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
+    # Inside the workflow, you define the jobs you want to run.
     jobs:
-      - test
-      - lint
-      # - docker-build-push:
-      #     requires:
-      #       - test
-      #       - lint
-      #     filters:
-      #       branches:
-      #         only: main
-      # - deploy:
-      #     requires:
-      #       - docker-build-push
-      #     filters:
-      #       branches:
-      #         only: main
+      - build-and-test
