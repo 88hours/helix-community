@@ -1,0 +1,92 @@
+version: 2.1
+
+orbs:
+  docker: circleci/docker@2.6
+
+jobs:
+  test:
+    docker:
+      - image: cimg/python:3.12
+      - image: cimg/redis:7.2
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - pip-{{ checksum "pyproject.toml" }}
+      - run:
+          name: Install dependencies
+          command: pip install -e ".[dev]"
+      - save_cache:
+          key: pip-{{ checksum "pyproject.toml" }}
+          paths:
+            - ~/.cache/pip
+      - run:
+          name: Run tests
+          command: pytest --tb=short
+      - store_test_results:
+          path: test-results
+
+  lint:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - run:
+          name: Install pyright
+          command: pip install pyright
+      - run:
+          name: Type check
+          command: pyright
+
+  docker-build-push:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and push Docker image
+          command: |
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker build -t "$DOCKER_USERNAME/helix:$CIRCLE_SHA1" -t "$DOCKER_USERNAME/helix:latest" .
+            docker push "$DOCKER_USERNAME/helix:$CIRCLE_SHA1"
+            docker push "$DOCKER_USERNAME/helix:latest"
+
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "$SSH_FINGERPRINT"
+      - run:
+          name: Deploy to Linux server
+          command: |
+            ssh -o StrictHostKeyChecking=no "$DEPLOY_USER@$DEPLOY_HOST" \
+              "docker pull $DOCKER_USERNAME/helix:$CIRCLE_SHA1 \
+               && docker stop helix || true \
+               && docker rm helix || true \
+               && docker run -d --name helix --restart unless-stopped \
+                    --env-file /etc/helix/.env \
+                    -p 8000:8000 \
+                    $DOCKER_USERNAME/helix:$CIRCLE_SHA1"
+
+workflows:
+  ci:
+    jobs:
+      - test
+      - lint
+      # - docker-build-push:
+      #     requires:
+      #       - test
+      #       - lint
+      #     filters:
+      #       branches:
+      #         only: main
+      # - deploy:
+      #     requires:
+      #       - docker-build-push
+      #     filters:
+      #       branches:
+      #         only: main
