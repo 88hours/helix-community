@@ -26,7 +26,6 @@ from fastapi.responses import FileResponse
 
 from agents.crash_handler.agent import handle
 from core.config import get_github_config, get_redis_url, get_rollbar_config, get_sentry_config, get_slack_config
-from core.models import CrashReport
 from core.state import read_pr_result, write_status
 from integrations import rollbar as rollbar_integration
 from integrations import sentry as sentry_integration

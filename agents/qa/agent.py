@@ -24,7 +24,7 @@ from agents.qa import prompts
 from core.config import get_github_config
 from core.events import publish
 from core.llm import complete
-from core.models import CrashReport, QAResult, TestCase, TestFormat, TicketAction, language_to_test_format
+from core.models import CrashReport, QAResult, TestCase, TicketAction, language_to_test_format
 from core.state import write_qa_result, write_status
 from core.utils import extract_json
 from integrations import github

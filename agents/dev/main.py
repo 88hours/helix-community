@@ -16,7 +16,7 @@ import redis.asyncio as aioredis
 from agents.dev.agent import handle
 from core.config import get_redis_url
 from core.events import subscribe
-from core.models import CrashReport, QAResult
+from core.models import QAResult
 from core.state import read_crash_report, read_qa_result
 
 logger = logging.getLogger(__name__)

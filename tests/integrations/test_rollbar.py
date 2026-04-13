@@ -1,6 +1,4 @@
 """Tests for integrations/rollbar.py"""
-import pytest
-
 from integrations.rollbar import parse_event, verify_token
 
 

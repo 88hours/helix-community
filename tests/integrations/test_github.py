@@ -2,8 +2,7 @@
 import pytest
 import respx
 import httpx
-from pathlib import Path
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 from integrations import github
 

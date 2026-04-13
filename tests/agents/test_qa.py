@@ -1,7 +1,5 @@
 """Tests for agents/qa/agent.py"""
 import json
-import tempfile
-from pathlib import Path
 from unittest.mock import AsyncMock, patch
 
 import pytest
