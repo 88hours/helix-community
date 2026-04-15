@@ -213,7 +213,7 @@ async def slack_actions(request: Request):
             )
         except Exception as exc:
             logger.error("pr merge failed", extra={"incident_id": incident_id, "error": str(exc)}, exc_info=True)
-            return {"text": f":x: Merge failed for PR #{pr_result.pr_number}: {exc}"}
+            return {"text": f":x: Merge failed for PR #{pr_result.pr_number}. Check logs for details."}
 
         await write_status(request.app.state.redis, incident_id, "pr_merged")
         logger.info("pr approved and merged", extra={"incident_id": incident_id, "pr_number": pr_result.pr_number})
