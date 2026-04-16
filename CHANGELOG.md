@@ -11,6 +11,13 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.2.0] — 2026-04-16
+
+### Security
+- Upgraded `langsmith` to fix a token vulnerability in streams.
+
+---
+
 ## [1.1.0] — 2026-04-09
 
 ### Added
@@ -53,6 +60,7 @@ Initial public release.
 
 ---
 
-[Unreleased]: https://github.com/88hours/helix-community/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/88hours/helix-community/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/88hours/helix-community/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/88hours/helix-community/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/88hours/helix-community/releases/tag/v1.0.0

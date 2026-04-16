@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "helix"
-version = "0.2.0"
+version = "1.2.0"
 description = "Autonomous incident response — Sentry crash to merged PR in under 10 minutes"
 requires-python = ">=3.12"
 dependencies = [
