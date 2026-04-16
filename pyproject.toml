@@ -42,7 +42,7 @@ dependencies = [
     "anthropic>=0.40",        # crash_handler, qa, code_quality agents
     "openai>=1.55",           # openrouter backend (OpenAI-compatible)
     "boto3>=1.35",            # eventbridge backend (optional; AWS deployments only)
-    "langsmith>=0.2",         # LLM call tracing and eval suite
+    "langsmith>=0.7.31",         # LLM call tracing and eval suite
 
     # OpenTelemetry — end-to-end distributed tracing (enabled via OTEL_ENABLED=true)
     "opentelemetry-api>=1.20",                        # core API; no-op by default when SDK not configured
