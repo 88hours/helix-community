@@ -180,7 +180,7 @@
       </span>
 
       <div class="hidden md:flex items-center gap-6 text-sm text-white/60">
-        <a href="#how-it-works" class="hover:text-white transition-colors">How it works</a>
+        <a href="#roi-calculator" class="hover:text-white transition-colors">Estimate MTTR reduction</a>
         <a href="#features" class="hover:text-white transition-colors">Features</a>
         <a href="#community-vs-cloud" class="hover:text-white transition-colors">Community vs Cloud</a>
         <a href="#contact" class="hover:text-white transition-colors">Contact</a>
@@ -200,7 +200,7 @@
     </div>
 
     <div id="nav-menu" class="md:hidden flex-col border-t border-white/10 bg-[#0c0c14]/95 px-4 py-3 gap-1">
-      <a href="#how-it-works" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">How it works</a>
+      <a href="#roi-calculator" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Estimate MTTR reduction</a>
       <a href="#features" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Features</a>
       <a href="#community-vs-cloud" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Community vs Cloud</a>
       <a href="#contact" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Contact</a>
@@ -221,52 +221,45 @@
 
     <div class="relative max-w-4xl mx-auto">
 
-      <!-- Badge -->
-      <div class="anim-1 inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-8">
-        <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-        Open source · Apache 2.0 based licence
-      </div>
+  <!-- Badge -->
+  <div class="anim-1 inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-8">
+    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+    Open source · Apache 2.0 licensed
+  </div>
 
-      <!-- Headline -->
-      <h1 class="anim-2 text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6 text-white">
-        Crash to pull request.<br />
-        <span class="gradient-text">Fully automated.</span>
-      </h1>
+  <!-- Headline -->
+  <h1 class="anim-2 text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6 text-white">
+    From production crash<br />
+    <span class="gradient-text">to verified pull request.</span>
+  </h1>
 
-      <!-- Sub -->
-      <p class="anim-3 text-base sm:text-xl text-white/55 max-w-2xl mx-auto mb-10 leading-relaxed">
-        A crash hits Sentry — Helix diagnoses it, writes a failing test, generates a fix, and opens a pull request. Your team approves in Slack. Nothing merges without your sign-off.
-      </p>
+  <!-- Sub -->
+  <p class="anim-3 text-base sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+    Most teams still rely on engineers to reproduce bugs, write failing tests, and patch fixes under pressure.
+    <br class="hidden sm:block" />
+    Helix automates that entire loop — generating tests, proposing fixes, and opening a pull request for human approval in Slack.
+  </p>
 
-      <!-- CTAs -->
-      <div class="anim-4 flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-        <a href="https://github.com/88hours/helix-community"
-           class="btn-shine flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-7 py-3.5 rounded-xl transition-colors text-sm shadow-lg shadow-indigo-900/40">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          Star on GitHub
-        </a>
-        <a href="#how-it-works"
-           class="flex items-center gap-2 border border-white/20 hover:border-white/40 text-white/70 hover:text-white font-medium px-7 py-3.5 rounded-xl transition-all text-sm">
-          See how it works
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </a>
-      </div>
+  <!-- CTAs -->
+  <div class="anim-4 flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
 
-      <!-- Terminal -->
-      <div class="anim-5 code-block-dark rounded-2xl overflow-hidden text-left max-w-xl mx-auto shadow-2xl shadow-black/40">
-        <div class="flex items-center gap-2 px-4 py-3 border-b border-white/8">
-          <div class="w-3 h-3 rounded-full bg-red-500/70"></div>
-          <div class="w-3 h-3 rounded-full bg-yellow-500/70"></div>
-          <div class="w-3 h-3 rounded-full bg-green-500/70"></div>
-          <span class="ml-2 text-xs text-white/30 font-mono">quick start</span>
-        </div>
-        <div class="p-5 font-mono text-sm space-y-2">
-          <p class="terminal-line opacity-0"><span class="text-white/30">$</span> <span class="text-indigo-300">git clone</span> <span class="text-white/80">https://github.com/88hours/helix-community</span></p>
-          <p class="terminal-line opacity-0"><span class="text-white/30">$</span> <span class="text-indigo-300">cp</span> <span class="text-white/80">.env.example .env</span> <span class="text-white/30"># add your keys</span></p>
-          <p class="terminal-line opacity-0"><span class="text-white/30">$</span> <span class="text-indigo-300">docker compose</span> <span class="text-white/80">up --build</span><span class="cursor text-indigo-400">▌</span></p>
-        </div>
-      </div>
-    </div>
+    <a href="https://github.com/88hours/helix-community"
+       class="btn-shine flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-7 py-3.5 rounded-xl transition-colors text-sm shadow-lg shadow-indigo-900/40">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      Star on GitHub
+    </a>
+
+    <a href="#roi-calculator"
+   class="flex items-center gap-2 border border-white/20 hover:border-white/40 text-white/70 hover:text-white font-medium px-7 py-3.5 rounded-xl transition-all text-sm">
+  Estimate your MTTR reduction
+  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+  </svg>
+</a>
+
+  </div>
+</div>
+
   </section>
 
   <!-- ─── INTEGRATIONS STRIP ────────────────────────────── -->
@@ -338,7 +331,7 @@
 
 
   <!-- ─── ROI CALCULATOR ─────────────────────────────────────────── -->
-<section class="py-20 sm:py-24 px-4 sm:px-6 bg-stone-50 border-b border-stone-200">
+<section id="roi-calculator" class="py-20 sm:py-24 px-4 sm:px-6 bg-stone-50 border-b border-stone-200">
   <div class="max-w-4xl mx-auto text-center mb-12">
     <h2 class="text-3xl sm:text-4xl font-black text-stone-900 mb-3">
 Estimate production incident engineering cost    </h2>
@@ -484,9 +477,7 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
 </section>
 
 
-<!-- ─── HOW IT WORKS ──────────────────────────────────── -->
-<section id="how-it-works" class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50">
-  <!-- ─── FEATURES ──────────────────────────────────────── -->
+ <!-- ─── FEATURES ──────────────────────────────────────── -->
   <section id="features" class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50 border-t border-stone-200">
     <div class="max-w-5xl mx-auto">
       <div class="text-center mb-16 reveal">
