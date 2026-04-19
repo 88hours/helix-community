@@ -483,14 +483,6 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
   </div>
 </section>
 
-<!-- subtle transition divider -->
-<div class="bg-gradient-to-b from-stone-50 to-stone-50 border-t border-stone-200 py-6">
-  <div class="max-w-5xl mx-auto text-center">
-    <p class="text-xs text-stone-400 uppercase tracking-widest">
-      Workflow breakdown
-    </p>
-  </div>
-</div>
 
 <!-- ─── HOW IT WORKS ──────────────────────────────────── -->
 <section id="how-it-works" class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50">
@@ -558,62 +550,141 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
   </section>
 
   <!-- ─── COMMUNITY VS CLOUD ────────────────────────────── -->
-  <section id="community-vs-cloud" class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <span class="section-eyebrow">Editions</span>
-        <h2 class="text-3xl sm:text-4xl font-black mb-4">Community vs Helix Cloud</h2>
-        <p class="text-stone-500 text-base sm:text-lg max-w-2xl mx-auto">Open source and self-hosted — or fully managed with a dashboard, per-project credentials, and enterprise observability.</p>
-      </div>
+  <!-- ─── COMMUNITY VS CLOUD (UPGRADE DRIVEN) ────────────────────────────── -->
+<section id="community-vs-cloud" class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
+  <div class="max-w-5xl mx-auto">
 
-      <div class="overflow-x-auto rounded-2xl border border-stone-200 shadow-sm reveal">
-        <table class="w-full text-sm border-collapse">
-          <thead>
-            <tr class="border-b border-stone-200 bg-stone-50">
-              <th class="text-left px-5 sm:px-6 py-4 text-stone-500 font-semibold w-1/2">Feature</th>
-              <th class="text-center px-5 sm:px-6 py-4 font-bold text-emerald-700 w-1/4">
-                Community
-                <div class="text-xs font-normal text-stone-400 mt-0.5">Open source · Self-hosted</div>
-              </th>
-              <th class="text-center px-5 sm:px-6 py-4 font-bold text-indigo-600 w-1/4">
-                Helix Cloud
-                <div class="text-xs font-normal text-stone-400 mt-0.5">Managed · Multi-project</div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-stone-100">
-            <tr class="bg-stone-50/60"><td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">Core pipeline</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Crash Handler Agent (Sentry + Rollbar)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">QA Agent — test generation &amp; deduplication</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Dev Agent — fix suggestion &amp; TDD loop</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Notifier Agent — Slack approval &amp; escalation</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Multi-language support (Python, JS, Ruby, Java, Go)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Redis Pub/Sub event bus</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Redis Streams — durable event log &amp; incident replay</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Ollama — local LLM support (zero API cost)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">TDD loop — iterate to passing suite</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Automated PR creation from passing fix</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">OpenRouter &amp; multi-provider LLM support</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
+    <!-- HEADER -->
+    <div class="text-center mb-14 reveal">
+      <span class="section-eyebrow">Editions</span>
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">Community vs Helix Cloud</h2>
+      <p class="text-stone-500 text-base sm:text-lg max-w-2xl mx-auto">
+        Community is perfect for local dev + small teams. Cloud is built for production-scale reliability, auditability, and team coordination.
+      </p>
 
-            <tr class="bg-stone-50/60"><td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">Hosting &amp; configuration</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Self-hosted (Docker Compose, Railway, Fly.io, ECS)</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Global env var configuration</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Managed hosting (zero ops)</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Per-project credentials &amp; webhook URLs</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">GitHub App integration (scoped tokens)</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-
-            <tr class="bg-stone-50/60"><td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">Dashboard &amp; observability</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">React dashboard with live incident stream</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Auth0 authentication (GitHub OAuth)</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Structured JSON logging</td><td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">OpenTelemetry distributed tracing</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">LangSmith LLM tracing &amp; eval suite</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-            <tr class="hover:bg-stone-50/70 transition-colors"><td class="px-5 sm:px-6 py-3 text-gray-700">Automated CI evals (fails if score &lt; 80%)</td><td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td><td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td></tr>
-          </tbody>
-        </table>
+      <!-- UPGRADE TRIGGERS -->
+      <div class="mt-8 inline-block text-left bg-stone-50 border border-stone-200 rounded-xl px-5 py-4 text-sm text-stone-600">
+        <p class="font-semibold text-stone-800 mb-2">You should use Cloud if you need:</p>
+        <ul class="space-y-1 list-disc pl-5">
+          <li>multi-repo or multi-team incident handling</li>
+          <li>audit logs / compliance / traceability</li>
+          <li>zero-downtime managed infrastructure</li>
+          <li>reliable production alert routing & approvals</li>
+        </ul>
       </div>
     </div>
-  </section>
+
+    <!-- TABLE -->
+    <div class="overflow-x-auto rounded-2xl border border-stone-200 shadow-sm reveal">
+      <table class="w-full text-sm border-collapse">
+
+        <thead>
+          <tr class="border-b border-stone-200 bg-stone-50">
+            <th class="text-left px-5 sm:px-6 py-4 text-stone-500 font-semibold w-1/2">
+              Capability
+            </th>
+            <th class="text-center px-5 sm:px-6 py-4 font-bold text-emerald-700 w-1/4">
+              Community
+              <div class="text-xs font-normal text-stone-400 mt-0.5">fast setup · local control</div>
+            </th>
+            <th class="text-center px-5 sm:px-6 py-4 font-bold text-indigo-600 w-1/4">
+              Helix Cloud
+              <div class="text-xs font-normal text-stone-400 mt-0.5">production-ready · managed</div>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-stone-100">
+
+          <!-- PIPELINE -->
+          <tr class="bg-stone-50/60">
+            <td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">
+              Incident pipeline
+            </td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              End-to-end crash → fix → PR automation
+              <div class="text-xs text-stone-400">Works locally, but manual scaling needed</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Test-driven auto-fix loop
+              <div class="text-xs text-stone-400">No orchestration guarantees under load</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
+          <!-- SCALE -->
+          <tr class="bg-stone-50/60">
+            <td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">
+              Scale & reliability
+            </td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Multi-service / multi-team support
+              <div class="text-xs text-stone-400">Becomes complex to coordinate manually</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Durable event replay (incident history)
+              <div class="text-xs text-stone-400">Hard to reconstruct in self-hosted setups</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Production-grade observability (tracing, evals)
+              <div class="text-xs text-stone-400">Requires manual setup + maintenance</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
+          <!-- OPS -->
+          <tr class="bg-stone-50/60">
+            <td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">
+              Operations
+            </td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Self-hosted deployment
+              <div class="text-xs text-stone-400">You own infra, scaling, and uptime</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Managed zero-ops infrastructure
+              <div class="text-xs text-stone-400">We handle scaling, uptime, and upgrades</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
   <!-- ─── LANGUAGE SUPPORT ──────────────────────────────── -->
   <section class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50 border-t border-stone-200">
