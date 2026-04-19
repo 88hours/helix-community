@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Helix — Self-Healing Production Systems</title>
+<title>Reduce production incident resolution time | Helix</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-  <meta name="description" content="Helix gives your production system the ability to heal itself. A crash hits Sentry — Helix writes the test, fixes the bug, opens the PR, and waits for your approval." />
+  <meta name="description" content="Helix gives your production system the ability to heal itself. A production crash hits Sentry — Helix reproduces it, generates a failing test, proposes a fix, and opens a pull request. Your team approves in Slack. Nothing merges without human review." />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5V2HXHS6V"></script>
   <script>
@@ -336,36 +336,14 @@
     </div>
   </div>
 
-  <!-- ─── STATS ──────────────────────────────────────────── -->
-  <div class="bg-white border-b border-stone-200 py-12 px-4 sm:px-6">
-    <div class="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8 sm:divide-x divide-stone-200">
-      <div class="text-center reveal reveal-delay-1">
-        <div class="text-3xl sm:text-4xl font-black gradient-text-warm mb-1.5">&lt; 5 min</div>
-        <div class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Crash to PR</div>
-      </div>
-      <div class="text-center reveal reveal-delay-2">
-        <div class="text-3xl sm:text-4xl font-black gradient-text-warm mb-1.5">4</div>
-        <div class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Autonomous agents</div>
-      </div>
-      <div class="text-center reveal reveal-delay-3">
-        <div class="text-3xl sm:text-4xl font-black gradient-text-warm mb-1.5">7</div>
-        <div class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Languages supported</div>
-      </div>
-      <div class="text-center reveal reveal-delay-4">
-        <div class="text-3xl sm:text-4xl font-black gradient-text-warm mb-1.5">0</div>
-        <div class="text-xs text-stone-400 font-semibold uppercase tracking-wider">Merges without approval</div>
-      </div>
-    </div>
-  </div>
+
   <!-- ─── ROI CALCULATOR ─────────────────────────────────────────── -->
 <section class="py-20 sm:py-24 px-4 sm:px-6 bg-stone-50 border-b border-stone-200">
   <div class="max-w-4xl mx-auto text-center mb-12">
     <h2 class="text-3xl sm:text-4xl font-black text-stone-900 mb-3">
-      Estimate your incident cost
-    </h2>
+Estimate production incident engineering cost    </h2>
     <p class="text-stone-500 max-w-2xl mx-auto">
-      Production incidents are expensive. Estimate how much engineering time is spent on debugging and recovery.
-    </p>
+Production incidents consume engineering time and slow feature delivery. Estimate current MTTR cost and recovery overhead.    </p>
   </div>
 
   <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -434,156 +412,88 @@ function calculateROI() {
     <p>${savedLow.toFixed(1)} – ${savedHigh.toFixed(1)} hours/month</p>
 
     <p class="text-sm text-stone-500 mt-3">
-      Based on reduced reproduction and debugging time in incident workflows.
-    </p>
+Based on reduced debugging, reproduction, and manual fix iteration cycles in incident response workflows.    </p>
   `;
 }
 </script>
 
-  <!-- ─── DEMO VIDEO ───────────────────────────────────────── -->
-  <section class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50 border-t border-stone-200">
-    <div class="max-w-4xl mx-auto text-center">
-      <p class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-3 reveal">See it in action</p>
-      <h2 class="text-3xl sm:text-4xl font-black text-stone-900 mb-4 reveal reveal-delay-1">Watch Helix heal a bug <span class="gradient-text-warm">end-to-end</span></h2>
-      <p class="text-stone-500 mb-10 max-w-xl mx-auto reveal reveal-delay-2">From Sentry alert to merged PR — fully autonomous, always human-approved.</p>
-      <div class="reveal reveal-delay-3 rounded-2xl overflow-hidden shadow-2xl border border-stone-200" style="position:relative;padding-bottom:56.25%;height:0;">
-        <iframe
-          src="https://www.youtube.com/embed/oGzHE9LrfSk"
-          title="Helix demo"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-        ></iframe>
-      </div>
+<section class="py-20 px-4 sm:px-6 bg-white border-b border-stone-200">
+  <div class="max-w-5xl mx-auto text-center mb-12">
+    <h2 class="text-3xl sm:text-4xl font-black text-stone-900">
+      Before vs After Helix
+    </h2>
+    <p class="text-stone-500 mt-3 max-w-2xl mx-auto">
+      How incident response changes when debugging and fix generation are automated.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
+
+    <div class="border border-stone-200 rounded-2xl p-6 bg-stone-50">
+      <h3 class="font-bold text-lg mb-3 text-stone-800">Before</h3>
+      <ul class="space-y-2 text-stone-600 text-sm">
+        <li>Manual log investigation</li>
+        <li>Reproducing issues locally</li>
+        <li>Writing failing tests from scratch</li>
+        <li>Context switching across alerts, code, and CI</li>
+        <li>Slow PR creation and review cycles</li>
+      </ul>
+      <div class="mt-5 text-2xl font-black text-red-500">High MTTR</div>
     </div>
-  </section>
 
-  <!-- ─── HOW IT WORKS ──────────────────────────────────── -->
-  <section id="how-it-works" class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <span class="section-eyebrow">How it works</span>
-        <h2 class="text-3xl sm:text-4xl font-black mb-4">Four agents. One approval.</h2>
-        <p class="text-stone-500 text-base sm:text-lg max-w-xl mx-auto">Each agent hands off to the next automatically. You only step in when the fix is ready.</p>
-      </div>
-
-      <div class="flex flex-col gap-3">
-        <div class="grid grid-cols-1 sm:grid-cols-9 gap-3 items-stretch">
-
-          <div class="sm:col-span-2 reveal reveal-delay-1">
-            <div class="card-lift bg-white border border-stone-200 rounded-2xl p-5 h-full">
-              <div class="w-10 h-10 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              </div>
-              <div class="text-xs text-indigo-400 font-mono font-bold mb-1.5 tracking-wide">01 · Sentinel</div>
-              <h3 class="font-bold text-sm mb-2">Crash Handler</h3>
-              <p class="text-xs text-stone-500 leading-relaxed">Receives Sentry or Rollbar webhooks, classifies severity, detects language, produces structured crash report.</p>
-            </div>
-          </div>
-
-          <div class="hidden sm:flex sm:col-span-1 items-center justify-center text-stone-300 pt-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
-          </div>
-
-          <div class="sm:col-span-2 reveal reveal-delay-2">
-            <div class="card-lift bg-white border border-stone-200 rounded-2xl p-5 h-full">
-              <div class="w-10 h-10 bg-purple-50 border border-purple-100 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-              </div>
-              <div class="text-xs text-purple-400 font-mono font-bold mb-1.5 tracking-wide">02 · Regen</div>
-              <h3 class="font-bold text-sm mb-2">QA Agent</h3>
-              <p class="text-xs text-stone-500 leading-relaxed">Deduplicates against open issues, clones repo, generates a failing test asserting correct behaviour. Retried if wrong.</p>
-            </div>
-          </div>
-
-          <div class="hidden sm:flex sm:col-span-1 items-center justify-center text-stone-300 pt-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
-          </div>
-
-          <div class="sm:col-span-2 reveal reveal-delay-3">
-            <div class="card-lift bg-white border border-stone-200 rounded-2xl p-5 h-full">
-              <div class="w-10 h-10 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
-              </div>
-              <div class="text-xs text-emerald-500 font-mono font-bold mb-1.5 tracking-wide">03 · Forge</div>
-              <h3 class="font-bold text-sm mb-2">Dev Agent</h3>
-              <p class="text-xs text-stone-500 leading-relaxed">Clones the repo, runs the failing test, and uses the Claude Code CLI to iterate a fix up to 3 times. Commits the passing fix and opens a GitHub PR.</p>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Row 2: Step 04 + human review -->
-        <div class="grid grid-cols-1 sm:grid-cols-9 gap-3 items-stretch">
-
-          <div class="sm:col-span-2 reveal reveal-delay-4">
-            <div class="card-lift bg-white border border-stone-200 rounded-2xl p-5 h-full">
-              <div class="w-10 h-10 bg-pink-50 border border-pink-100 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-              </div>
-              <div class="text-xs text-pink-400 font-mono font-bold mb-1.5 tracking-wide">04 · Pulse</div>
-              <h3 class="font-bold text-sm mb-2">Notifier Agent</h3>
-              <p class="text-xs text-stone-500 leading-relaxed">Sends a Slack notification with the PR link and crash context. Escalates with full reasoning if the TDD loop exhausts all retries.</p>
-            </div>
-          </div>
-
-          <div class="hidden sm:flex sm:col-span-1 items-center justify-center text-stone-300 pt-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
-          </div>
-
-          <div class="sm:col-span-6 reveal reveal-delay-5">
-            <div class="card-lift h-full bg-gradient-to-br from-indigo-50 via-white to-purple-50/40 border border-indigo-200 rounded-2xl p-6">
-              <div class="flex items-start gap-4">
-                <div class="w-10 h-10 bg-white border border-indigo-200 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                </div>
-                <div>
-                  <div class="text-xs text-indigo-500 font-mono font-bold mb-1.5 tracking-wide">05 · Human review</div>
-                  <h3 class="font-bold mb-2">Your team reviews the fix in Slack</h3>
-                  <p class="text-sm text-stone-500 leading-relaxed">Helix posts the PR link to Slack. Your team reviews the diff and approves or dismisses it. <strong class="text-gray-700 font-semibold">Nothing merges without your sign-off.</strong></p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+    <div class="border border-indigo-200 rounded-2xl p-6 bg-indigo-50">
+      <h3 class="font-bold text-lg mb-3 text-stone-800">After Helix</h3>
+      <ul class="space-y-2 text-stone-700 text-sm">
+        <li>Automatic crash context extraction</li>
+        <li>Failing test generated from production behavior</li>
+        <li>Fix proposal created from codebase context</li>
+        <li>CI validates fix before human review</li>
+        <li>Pull request created automatically</li>
+      </ul>
+      <div class="mt-5 text-2xl font-black text-indigo-600">&lt; 5 min MTTR</div>
     </div>
-  </section>
 
-  <!-- ─── RELIABILITY PILLARS ───────────────────────────── -->
-  <section class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
-    <div class="max-w-5xl mx-auto">
-      <div class="text-center mb-16 reveal">
-        <span class="section-eyebrow">Built to last</span>
-        <h2 class="text-3xl sm:text-4xl font-black mb-4">Reliable by design</h2>
-        <p class="text-stone-500 text-base sm:text-lg max-w-xl mx-auto">Every architectural decision in Helix prioritises correctness and safety over speed.</p>
-      </div>
+  </div>
+</section>
+<!-- ─── DEMO VIDEO ───────────────────────────────────────── -->
+<section class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50 border-t border-stone-200">
+  <div class="max-w-4xl mx-auto text-center">
+    <p class="text-xs font-semibold uppercase tracking-widest text-indigo-500 mb-3 reveal">
+      See it in action
+    </p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+    <h2 class="text-3xl sm:text-4xl font-black text-stone-900 mb-4 reveal reveal-delay-1">
+      Watch a production bug resolve automatically
+    </h2>
 
-        <div class="reveal reveal-delay-1 group">
-          <div class="pillar-num mb-4 group-hover:opacity-70 transition-opacity">01</div>
-          <h3 class="text-xl font-black mb-3">Secure by default</h3>
-          <p class="text-stone-500 leading-relaxed text-sm">All webhook payloads are HMAC-verified. Your credentials never leave your infrastructure. No code merges without explicit human approval in Slack.</p>
-        </div>
+    <p class="text-stone-500 mb-10 max-w-xl mx-auto reveal reveal-delay-2">
+      From Sentry alert to pull request — generated, tested, and validated before human review.
+    </p>
 
-        <div class="reveal reveal-delay-2 group">
-          <div class="pillar-num mb-4 group-hover:opacity-70 transition-opacity">02</div>
-          <h3 class="text-xl font-black mb-3">Correct, not just fast</h3>
-          <p class="text-stone-500 leading-relaxed text-sm">The QA Agent writes tests that assert correct behaviour — not just that the crash disappears. Tests are validated and retried until the assertion is provably right.</p>
-        </div>
-
-        <div class="reveal reveal-delay-3 group">
-          <div class="pillar-num mb-4 group-hover:opacity-70 transition-opacity">03</div>
-          <h3 class="text-xl font-black mb-3">Self-hosted freedom</h3>
-          <p class="text-stone-500 leading-relaxed text-sm">Run entirely on your own infrastructure. Use Anthropic, Ollama (local), or any LLM provider. One Docker Compose command. No vendor lock-in.</p>
-        </div>
-
-      </div>
+    <div class="reveal reveal-delay-3 rounded-2xl overflow-hidden shadow-2xl border border-stone-200"
+         style="position:relative;padding-bottom:56.25%;height:0;">
+      <iframe
+        src="https://www.youtube.com/embed/oGzHE9LrfSk"
+        title="Helix demo"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+      ></iframe>
     </div>
-  </section>
+  </div>
+</section>
 
+<!-- subtle transition divider -->
+<div class="bg-gradient-to-b from-stone-50 to-stone-50 border-t border-stone-200 py-6">
+  <div class="max-w-5xl mx-auto text-center">
+    <p class="text-xs text-stone-400 uppercase tracking-widest">
+      Workflow breakdown
+    </p>
+  </div>
+</div>
+
+<!-- ─── HOW IT WORKS ──────────────────────────────────── -->
+<section id="how-it-works" class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50">
   <!-- ─── FEATURES ──────────────────────────────────────── -->
   <section id="features" class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50 border-t border-stone-200">
     <div class="max-w-5xl mx-auto">
