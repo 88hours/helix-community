@@ -357,6 +357,88 @@
       </div>
     </div>
   </div>
+  <!-- ─── ROI CALCULATOR ─────────────────────────────────────────── -->
+<section class="py-20 sm:py-24 px-4 sm:px-6 bg-stone-50 border-b border-stone-200">
+  <div class="max-w-4xl mx-auto text-center mb-12">
+    <h2 class="text-3xl sm:text-4xl font-black text-stone-900 mb-3">
+      Estimate your incident cost
+    </h2>
+    <p class="text-stone-500 max-w-2xl mx-auto">
+      Production incidents are expensive. Estimate how much engineering time is spent on debugging and recovery.
+    </p>
+  </div>
+
+  <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+    <div>
+      <label class="text-sm font-medium text-stone-600">Incidents per week</label>
+      <input id="incidents" type="number" value="5"
+        class="w-full mt-2 px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+    </div>
+
+    <div>
+      <label class="text-sm font-medium text-stone-600">Avg hours per incident (MTTR)</label>
+      <input id="mttr" type="number" value="3"
+        class="w-full mt-2 px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+    </div>
+
+    <div>
+      <label class="text-sm font-medium text-stone-600">Engineers involved</label>
+      <input id="engineers" type="number" value="2"
+        class="w-full mt-2 px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+    </div>
+
+    <div>
+      <label class="text-sm font-medium text-stone-600">Hourly cost ($)</label>
+      <input id="cost" type="number" value="100"
+        class="w-full mt-2 px-4 py-3 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+    </div>
+  </div>
+
+  <div class="text-center mt-8">
+    <button onclick="calculateROI()"
+      class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors">
+      Estimate impact
+    </button>
+  </div>
+
+  <div id="roi-result"
+    class="max-w-3xl mx-auto mt-8 p-6 bg-white border border-stone-200 rounded-xl text-left">
+    Enter values above to estimate incident cost.
+  </div>
+</section>
+
+<script>
+function calculateROI() {
+  const incidents = Number(document.getElementById("incidents").value);
+  const mttr = Number(document.getElementById("mttr").value);
+  const engineers = Number(document.getElementById("engineers").value);
+  const cost = Number(document.getElementById("cost").value);
+
+  const monthlyIncidents = incidents * 4;
+
+  const totalHours = monthlyIncidents * mttr * engineers;
+  const totalCost = totalHours * cost;
+
+  const savedLow = totalHours * 0.25;
+  const savedHigh = totalHours * 0.5;
+
+  document.getElementById("roi-result").innerHTML = `
+    <h3 class="text-lg font-semibold mb-2">Estimated monthly impact</h3>
+    <p><b>Engineering time spent:</b> ${totalHours.toFixed(1)} hours</p>
+    <p><b>Estimated cost:</b> $${totalCost.toFixed(0)}</p>
+
+    <div class="my-4 border-t border-stone-200"></div>
+
+    <p><b>Potential reduction with Helix:</b></p>
+    <p>${savedLow.toFixed(1)} – ${savedHigh.toFixed(1)} hours/month</p>
+
+    <p class="text-sm text-stone-500 mt-3">
+      Based on reduced reproduction and debugging time in incident workflows.
+    </p>
+  `;
+}
+</script>
 
   <!-- ─── DEMO VIDEO ───────────────────────────────────────── -->
   <section class="py-20 sm:py-28 px-4 sm:px-6 bg-stone-50 border-t border-stone-200">
