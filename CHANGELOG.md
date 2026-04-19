@@ -11,6 +11,18 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.3.0] — 2026-04-19
+
+### Added
+- **Railway deployment** — one-click deploy button in README; `railway.toml`,
+  `entrypoint.sh`, and `railway-deploy.sh` added so the full stack can be
+  deployed to Railway without local Docker Compose.
+- `entrypoint.sh` supports three modes: docker-compose `command:` args,
+  `START_COMMAND` env var (per-service on Railway), or all-agents-in-one-container
+  fallback for single-service deployments.
+
+---
+
 ## [1.2.0] — 2026-04-16
 
 ### Security
