@@ -183,7 +183,7 @@ python -m agents.notifier.main                    # Notifier
 
 ## Contact
 
-General enquiries, bug reports, or feedback — [hello@88hours.io](mailto:hello@88hours.io)
+General enquiries, bug reports, or feedback — [open a GitHub issue](https://github.com/88hours/helix-community/issues/new).
 
 Interested in Helix Cloud (managed hosting, dashboard, enterprise features)? [Talk to us](mailto:hello@88hours.io?subject=Helix%20Cloud%20enquiry).
 
