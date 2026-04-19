@@ -36,7 +36,7 @@ COPY pyproject.toml .
 RUN pip install --no-cache-dir -e "."
 
 COPY . .
-RUN chown -R helix:helix /app
+RUN chown -R helix:helix /app && chmod +x /app/entrypoint.sh
 
 USER helix
 
@@ -45,5 +45,8 @@ USER helix
 # ---------------------------------------------------------------------------
 EXPOSE 8000
 
-# Override CMD per service in docker-compose.yml or your deployment platform.
-CMD ["uvicorn", "agents.crash_handler.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# entrypoint.sh reads START_COMMAND from the environment.
+# Set START_COMMAND as a Railway env var per service, or leave unset to run
+# all agents in one container.
+# docker-compose overrides this via its own `command:` per service.
+ENTRYPOINT ["/app/entrypoint.sh"]

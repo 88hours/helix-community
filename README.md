@@ -1,5 +1,6 @@
 # Helix
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/88hours/helix-community/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/88hours/helix-community/tree/main)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/new/template?template=https://github.com/88hours/helix-community)
 [![License](https://img.shields.io/badge/license-Apache%202.0%20%2B%20commercial%20restrictions-blue)](LICENSE)
 
 Autonomous incident response — from production crash to fix suggestion, without waking anyone up.
