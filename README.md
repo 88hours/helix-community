@@ -9,7 +9,7 @@ Helix watches your error tracker. When a bug lands, it writes a failing test, ru
 
 **Pipeline:** Crash Handler → QA Agent → Dev Agent → Notifier → Human Review
 
-[![Helix Demo](https://img.youtube.com/vi/oGzHE9LrfSk/maxresdefault.jpg)](https://www.youtube.com/watch?v=oGzHE9LrfSk)
+![Helix Demo](helix-new-ui.gif)
 
 ---
 
