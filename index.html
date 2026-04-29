@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Reduce production incident resolution time | Helix</title>
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="helix-logo.svg" />
   <meta name="description" content="Helix gives your production system the ability to heal itself. A production crash hits Sentry — Helix reproduces it, generates a failing test, proposes a fix, and opens a pull request. Your team approves in Slack. Nothing merges without human review." />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R5V2HXHS6V"></script>
@@ -182,11 +182,11 @@
       <div class="hidden md:flex items-center gap-6 text-sm text-white/60">
         <a href="#roi-calculator" class="hover:text-white transition-colors">Estimate MTTR reduction</a>
         <a href="#features" class="hover:text-white transition-colors">Features</a>
-        <a href="#community-vs-cloud" class="hover:text-white transition-colors">Community vs Cloud</a>
-        <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+
+
         <a href="https://github.com/88hours/helix-community"
            class="btn-shine flex items-center gap-2 text-white bg-brand hover:bg-brand-dark px-3 py-1.5 rounded-md transition-colors font-medium">
-          View on GitHub
+          Helix Community on GitHub
           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
       </div>
@@ -202,7 +202,8 @@
     <div id="nav-menu" class="md:hidden flex-col border-t border-white/10 bg-[#0c0c14]/95 px-4 py-3 gap-1">
       <a href="#roi-calculator" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Estimate MTTR reduction</a>
       <a href="#features" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Features</a>
-      <a href="#community-vs-cloud" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Community vs Cloud</a>
+
+      <a href="#beta-access" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Beta</a>
       <a href="#contact" class="block px-3 py-2 text-sm text-white/60 hover:text-white hover:bg-white/5 rounded-lg transition-colors">Contact</a>
     </div>
   </nav>
@@ -221,43 +222,29 @@
 
     <div class="relative max-w-4xl mx-auto">
 
-  <!-- Badge -->
-  <div class="anim-1 inline-flex items-center gap-2 text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-8">
-    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-    Open source · Apache 2.0 licensed
-  </div>
-
   <!-- Headline -->
   <h1 class="anim-2 text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.05] tracking-tight mb-6 text-white">
-    From production crash<br />
-    <span class="gradient-text">to verified pull request.</span>
+    Try Helix Server for free
   </h1>
 
   <!-- Sub -->
   <p class="anim-3 text-base sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
-    Most teams still rely on engineers to reproduce bugs, write failing tests, and patch fixes under pressure.
-    <br class="hidden sm:block" />
-    Helix automates that entire loop — generating tests, proposing fixes, and opening a pull request for human approval in Slack.
+    Get early access to Helix Server — the self-hosted version with AI-powered crash analysis, automatic test generation, and fix proposals. Runs on your infrastructure.
   </p>
 
   <!-- CTAs -->
   <div class="anim-4 flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
 
-    <a href="https://github.com/88hours/helix-community"
+    <button onclick="sendBetaRequest()"
        class="btn-shine flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-semibold px-7 py-3.5 rounded-xl transition-colors text-sm shadow-lg shadow-indigo-900/40">
-      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-      Star on GitHub
-    </a>
-
-    <a href="#roi-calculator"
-   class="flex items-center gap-2 border border-white/20 hover:border-white/40 text-white/70 hover:text-white font-medium px-7 py-3.5 rounded-xl transition-all text-sm">
-  Estimate your MTTR reduction
-  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-  </svg>
-</a>
+      Request access
+    </button>
 
   </div>
+
+  <p class="text-xs text-white/40 mb-4">
+    free during beta · No credit card required · Limited spots available
+  </p>
 </div>
 
   </section>
@@ -540,27 +527,25 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
     </div>
   </section>
 
-  <!-- ─── COMMUNITY VS CLOUD ────────────────────────────── -->
-  <!-- ─── COMMUNITY VS CLOUD (UPGRADE DRIVEN) ────────────────────────────── -->
-<section id="community-vs-cloud" class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
+  <!-- ─── COMMUNITY VS SERVER ────────────────────────────── -->
+<section id="community-vs-server" class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
   <div class="max-w-5xl mx-auto">
 
     <!-- HEADER -->
     <div class="text-center mb-14 reveal">
-      <span class="section-eyebrow">Editions</span>
-      <h2 class="text-3xl sm:text-4xl font-black mb-4">Community vs Helix Cloud</h2>
+      <h2 class="text-3xl sm:text-4xl font-black mb-4">Helix Community vs Helix Server</h2>
       <p class="text-stone-500 text-base sm:text-lg max-w-2xl mx-auto">
-        Community is perfect for local dev + small teams. Cloud is built for production-scale reliability, auditability, and team coordination.
+        Community is a no-UI, config-driven setup — great for individual devs and small teams. Helix Server adds a full web dashboard, GitHub app integration, and team-ready incident management, all self-hosted on your infrastructure.
       </p>
 
       <!-- UPGRADE TRIGGERS -->
       <div class="mt-8 inline-block text-left bg-stone-50 border border-stone-200 rounded-xl px-5 py-4 text-sm text-stone-600">
-        <p class="font-semibold text-stone-800 mb-2">You should use Cloud if you need:</p>
+        <p class="font-semibold text-stone-800 mb-2">You should use Helix Server if you need:</p>
         <ul class="space-y-1 list-disc pl-5">
+          <li>a web dashboard to manage projects and incidents</li>
+          <li>GitHub app integration without manual config</li>
           <li>multi-repo or multi-team incident handling</li>
           <li>audit logs / compliance / traceability</li>
-          <li>zero-downtime managed infrastructure</li>
-          <li>reliable production alert routing & approvals</li>
         </ul>
       </div>
     </div>
@@ -575,12 +560,12 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
               Capability
             </th>
             <th class="text-center px-5 sm:px-6 py-4 font-bold text-emerald-700 w-1/4">
-              Community
-              <div class="text-xs font-normal text-stone-400 mt-0.5">fast setup · local control</div>
+              Helix Community
+              <div class="text-xs font-normal text-stone-400 mt-0.5">no UI · config-driven</div>
             </th>
             <th class="text-center px-5 sm:px-6 py-4 font-bold text-indigo-600 w-1/4">
-              Helix Cloud
-              <div class="text-xs font-normal text-stone-400 mt-0.5">production-ready · managed</div>
+              Helix Server
+              <div class="text-xs font-normal text-stone-400 mt-0.5">dashboard · self-hosted</div>
             </th>
           </tr>
         </thead>
@@ -646,6 +631,22 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
             <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
           </tr>
 
+          <!-- UI -->
+          <tr class="bg-stone-50/60">
+            <td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">
+              Dashboard &amp; UI
+            </td>
+          </tr>
+
+          <tr class="hover:bg-stone-50/70 transition-colors">
+            <td class="px-5 sm:px-6 py-3 text-gray-700">
+              Web dashboard
+              <div class="text-xs text-stone-400">GitHub app integration, live incident feed, agent settings</div>
+            </td>
+            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
+            <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
+          </tr>
+
           <!-- OPS -->
           <tr class="bg-stone-50/60">
             <td colspan="3" class="px-5 sm:px-6 py-2 text-xs font-bold text-stone-400 uppercase tracking-widest">
@@ -659,15 +660,6 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
               <div class="text-xs text-stone-400">You own infra, scaling, and uptime</div>
             </td>
             <td class="px-5 sm:px-6 py-3 text-center text-emerald-600 font-bold">✓</td>
-            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
-          </tr>
-
-          <tr class="hover:bg-stone-50/70 transition-colors">
-            <td class="px-5 sm:px-6 py-3 text-gray-700">
-              Managed zero-ops infrastructure
-              <div class="text-xs text-stone-400">We handle scaling, uptime, and upgrades</div>
-            </td>
-            <td class="px-5 sm:px-6 py-3 text-center text-stone-300">—</td>
             <td class="px-5 sm:px-6 py-3 text-center text-indigo-600 font-bold">✓</td>
           </tr>
 
@@ -686,7 +678,7 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
       <span class="section-eyebrow">Stack coverage</span>
 
       <h2 class="text-3xl sm:text-4xl font-black mb-4">
-        Works across your entire backend stack
+        Works across your entire stack
       </h2>
 
       <p class="text-stone-500 mb-10 leading-relaxed">
@@ -878,132 +870,65 @@ Based on reduced debugging, reproduction, and manual fix iteration cycles in inc
   </div>
 </section>
 
-<!-- ─── DEPLOYMENT PATHS / CONTACT ─────────────────────── -->
-<section id="contact" class="py-20 sm:py-28 px-4 sm:px-6 bg-white border-t border-stone-200">
-  <div class="max-w-3xl mx-auto text-center">
+<span id="beta-access"></span>
 
-    <!-- Header -->
-    <div class="reveal">
-      <span class="section-eyebrow">Deployment</span>
+<!-- ─── BETA MODAL ──────────────────────────────── -->
+<div id="beta-modal" class="fixed inset-0 z-50 hidden">
+  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="closeBetaModal()"></div>
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8">
+    <button onclick="closeBetaModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-600">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
 
-      <h2 class="text-3xl sm:text-4xl font-black mb-4">
-        Choose your path to lower MTTR
-      </h2>
+    <h3 class="font-bold text-xl mb-2">Request early access</h3>
+    <p class="text-sm text-stone-500 mb-6">We'll review your request and reply with a download link. Limited spots available.</p>
 
-      <p class="text-stone-500 text-base sm:text-lg mb-12">
-        Run Helix fully open-source on your infrastructure, or reduce incident resolution time across teams with managed cloud orchestration and observability.
-      </p>
-    </div>
+    <button onclick="sendBetaRequest()"
+      class="btn-shine w-full flex items-center justify-center gap-2 bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      Send access request
+    </button>
 
-    <!-- Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-
-      <!-- Community -->
-      <div class="card-lift bg-stone-50 border border-stone-200 rounded-2xl p-6 sm:p-8 text-left reveal reveal-delay-1">
-
-        <div class="w-11 h-11 bg-white border border-stone-200 rounded-xl flex items-center justify-center mb-5 shadow-sm">
-          <svg class="w-5 h-5 text-stone-600" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-        </div>
-
-        <h3 class="font-bold text-lg mb-2">Open source</h3>
-
-        <p class="text-sm text-stone-500 mb-5 leading-relaxed">
-          Self-host Helix on your own infrastructure. Full control over agents, LLM providers, and incident pipelines.
-        </p>
-
-        <a href="https://github.com/88hours/helix-community/issues"
-           class="inline-flex items-center gap-2 text-sm font-semibold text-stone-700 hover:text-gray-900 border border-stone-300 hover:border-stone-400 px-4 py-2.5 rounded-xl transition-all">
-          View on GitHub
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-          </svg>
-        </a>
-      </div>
-
-      <!-- Cloud -->
-      <div class="card-lift bg-gradient-to-br from-indigo-50 via-white to-purple-50/40 border border-indigo-200 rounded-2xl p-6 sm:p-8 text-left reveal reveal-delay-2">
-
-        <div class="inline-block text-xs font-bold text-indigo-600 bg-white border border-indigo-200 px-2.5 py-1 rounded-full mb-5 shadow-sm">
-          Helix Cloud
-        </div>
-
-        <h3 class="font-bold text-lg mb-2">Reduce MTTR across teams</h3>
-
-        <p class="text-sm text-stone-500 mb-5 leading-relaxed">
-          Managed orchestration, multi-project visibility, and observability pipelines designed to cut incident resolution time at scale.
-        </p>
-
-        <a href="mailto:hello@88hours.io?subject=Helix%20Cloud%20-%20MTTR%20reduction%20at%20scale"
-           class="btn-shine inline-flex items-center gap-2 text-sm font-bold text-white bg-brand hover:bg-brand-dark px-4 py-2.5 rounded-xl transition-colors shadow-md shadow-indigo-200">
-          Talk about Cloud
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-          </svg>
-        </a>
-
-      </div>
-
-    </div>
+    <p class="text-xs text-stone-400 text-center mt-4">Opens your email client with a pre-filled request.</p>
   </div>
-</section>
-<!-- ─── FINAL CTA (dark) ──────────────────────────────── -->
-<section class="cta-bg relative py-20 sm:py-28 px-4 sm:px-6 text-center overflow-hidden">
+</div>
 
-  <div class="hero-glow"
-       style="width:400px;height:400px;background:rgba(99,102,241,0.15);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+<script>
+function openBetaModal() {
+  document.getElementById('beta-modal').classList.remove('hidden');
+}
 
-  <div class="relative max-w-2xl mx-auto reveal">
+function closeBetaModal() {
+  document.getElementById('beta-modal').classList.add('hidden');
+}
 
-    <h2 class="text-3xl sm:text-5xl font-black text-white mb-5 leading-tight">
-      From crash to pull request<br/>
-      <span class="gradient-text">in under 60 seconds.</span>
-    </h2>
+function sendBetaRequest() {
+  const subject = encodeURIComponent('Helix Server Beta Access Request');
+  const body = encodeURIComponent(
+    'Hi Helix team,\n\n' +
+    "I'd like early access to Helix Server beta.\n\n" +
+    'Name: \n' +
+    'Company / Project: \n' +
+    'Use case (brief): \n' +
+    'Stack (language + error tracker): \n\n' +
+    'Thanks'
+  );
+  window.location.href = 'mailto:hello@88hours.io?subject=' + subject + '&body=' + body;
+}
+</script>
 
-    <p class="text-white/55 text-base sm:text-lg mb-6 leading-relaxed">
-      Helix detects an incident, generates a failing test, applies a fix, and opens a PR.
-      Your team approves in Slack. MTTR drops immediately.
-    </p>
-
-    <div class="inline-flex items-center gap-2 text-xs text-white/60 mb-10">
-      <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-      No dashboard required · Human approval always enforced
-    </div>
-
-    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-
-      <a href="https://github.com/88hours/helix-community"
-         class="btn-shine flex items-center gap-2 bg-brand hover:bg-brand-dark text-white font-bold px-8 py-4 rounded-xl transition-colors text-sm shadow-xl shadow-indigo-900/40">
-
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-
-        Start self-hosting
-      </a>
-
-      <a href="#community-vs-cloud"
-         class="flex items-center gap-2 border border-white/20 hover:border-white/40 text-white/70 hover:text-white font-medium px-8 py-4 rounded-xl transition-all text-sm">
-
-        Compare editions →
-      </a>
-
-    </div>
-
-  </div>
 </section>
 
-  <!-- ─── FOOTER ─────────────────────────────────────────── -->
-  <footer class="border-t border-white/10 bg-[#0c0c14] py-10 sm:py-12 px-4 sm:px-6">
+<!-- ─── FOOTER ──────────────────────────────────────────── -->
+<footer class="border-t border-white/10 bg-[#0c0c14] py-10 sm:py-12 px-4 sm:px-6">
     <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       <div class="flex items-center gap-4 text-sm">
         <span class="font-bold text-white"><span class="gradient-text">Helix</span></span>
-        <span class="text-white/30">Community Edition</span>
-        <a href="https://github.com/88hours/helix-community/blob/main/LICENSE" class="text-white/30 hover:text-white/60 transition-colors text-xs">Open Source License</a>
+        <span class="text-white/30">Helix Server</span>
+        <a href="https://github.com/88hours/helix-community/blob/main/LICENSE" class="text-white/30 hover:text-white/60 transition-colors text-xs">Helix Community Open Source License</a>
       </div>
       <div class="flex items-center gap-6 text-xs text-white/30">
-        <a href="https://github.com/88hours/helix-community" class="hover:text-white/60 transition-colors">github.com/88hours/helix-community</a>
+        <a href="https://github.com/88hours/helix-community" class="hover:text-white/60 transition-colors">Helix Community GitHub Repo</a>
         <a href="mailto:hello@88hours.io" class="hover:text-white/60 transition-colors">hello@88hours.io</a>
       </div>
     </div>
