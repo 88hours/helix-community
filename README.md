@@ -48,11 +48,11 @@ Then point your Sentry or Rollbar webhook at `http://your-host:8000/webhook/sent
 ## Requirements
 
 - Docker + Docker Compose
-- An [Anthropic API key](https://console.anthropic.com/) **or** a locally running [Ollama](https://ollama.com/) instance
+- At least one LLM provider — Anthropic API key, OpenRouter API key, AWS Bedrock IAM credentials, or a locally running [Ollama](https://ollama.com/) instance
 - A GitHub personal access token with `repo` scope
 - A Sentry or Rollbar account (or both)
 - A Slack bot with `chat:write` scope (strongly recommended)
-- [Claude Code CLI](https://claude.ai/code) installed and authenticated (required for the Dev Agent TDD loop)
+- [Claude Code CLI](https://claude.ai/code) installed and authenticated (default Dev Agent backend; swap to any other provider via config)
 
 ---
 
@@ -62,7 +62,8 @@ All configuration is via environment variables. Copy `.env.example` to `.env` an
 
 | Variable | Required | Description |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Anthropic only | Anthropic API key |
+| `ANTHROPIC_API_KEY` | One LLM key required | Anthropic API key |
+| `OPENROUTER_API_KEY` | One LLM key required | OpenRouter API key |
 | `REDIS_URL` | Yes | Redis connection URL |
 | `GITHUB_TOKEN` | Yes | GitHub PAT with repo scope |
 | `HELIX_GITHUB_REPO` | Yes | Repo to fix bugs in (`owner/name`) |
@@ -71,25 +72,44 @@ All configuration is via environment variables. Copy `.env.example` to `.env` an
 | `SLACK_BOT_TOKEN` | Recommended | Bot token (`xoxb-...`) |
 | `SLACK_SIGNING_SECRET` | Recommended | Slack app signing secret |
 | `SLACK_APPROVAL_CHANNEL` | Recommended | Channel for Slack notifications |
+| `AWS_BEDROCK_REGION` | Bedrock only | AWS region (default: `us-east-1`) |
 
 ### Model & provider
 
-All agents share a single LLM configuration set in `config.yaml`. Two providers are supported:
+Each agent has its own provider and model set in `config.yaml`. Defaults:
 
-**Anthropic (default)**
-```bash
-HELIX_PROVIDER=anthropic
-HELIX_MODEL=claude-sonnet-4-6
+```yaml
+agents:
+  crash_handler:
+    provider: anthropic
+    model: claude-haiku-4-5-20251001
+  qa:
+    provider: anthropic
+    model: claude-haiku-4-5-20251001
+  dev:
+    provider: claude-code
+    model: claude-sonnet-4-6
 ```
 
-**Ollama (local)**
+Override any agent at runtime with env vars:
+
 ```bash
-HELIX_PROVIDER=ollama
-HELIX_MODEL=llama3.2
-HELIX_OLLAMA_BASE_URL=http://localhost:11434   # optional, this is the default
+HELIX_CRASH_HANDLER_PROVIDER=bedrock
+HELIX_DEV_PROVIDER=openrouter
+HELIX_DEV_MODEL=anthropic/claude-sonnet-4-6
 ```
 
-Ollama uses the standard OpenAI-compatible `/v1/chat/completions` endpoint — no API key required.
+**Supported providers:**
+
+| Provider | Key required | Notes |
+|---|---|---|
+| `anthropic` | `ANTHROPIC_API_KEY` | Default for Crash Handler and QA Agent |
+| `bedrock` | AWS IAM role (no stored key) | Set `AWS_BEDROCK_REGION` if not `us-east-1` |
+| `openrouter` | `OPENROUTER_API_KEY` | Any model on OpenRouter's catalogue |
+| `ollama` | None | Set `HELIX_<AGENT>_BASE_URL` for non-default URL |
+| `claude-code` | Claude Code CLI auth | Default Dev Agent backend |
+| `opencode` | OpenCode CLI installed | Dev Agent alternative |
+| `goose` | Goose CLI installed | Dev Agent alternative |
 
 ---
 
@@ -120,6 +140,7 @@ Ollama uses the standard OpenAI-compatible `/v1/chat/completions` endpoint — n
 | Per-project credentials | — | Yes |
 | GitHub App (multi-repo) | — | Yes |
 | OpenTelemetry tracing | — | Yes |
+| LangSmith tracing (basic) | Yes (opt-in) | Yes |
 | LangSmith evals | — | Yes |
 | Managed hosting | — | Yes |
 
@@ -146,11 +167,12 @@ agents/
   dev/             Subscriber — TDD loop: clone repo, run failing test, fix with Claude Code CLI, open PR
   notifier/        Subscriber — sends Slack notifications
 core/
-  config.py        Loads config.yaml + env var overrides
+  config.py        Loads config.yaml + env var overrides; per-agent AgentConfig
   events.py        Redis Pub/Sub publish/subscribe
   state.py         Redis read/write helpers, keyed by incident_id
   models.py        Pydantic models shared across agents
-  llm.py           Anthropic / Ollama wrapper; `complete_tdd()` spawns Claude Code CLI subprocess
+  llm.py           LLM router — dispatches to Anthropic, Bedrock, OpenRouter, Ollama, Claude Code, OpenCode, or Goose based on agent config
+  preflight.py     Startup env validation — checks at least one LLM provider is configured
 integrations/
   sentry.py        Sentry webhook parsing
   rollbar.py       Rollbar webhook parsing
