@@ -11,6 +11,39 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.0] — 2026-06-04
+
+### Added
+- **AWS Bedrock provider** — run Crash Handler and QA Agent via `anthropic.AnthropicBedrock`
+  using an IAM role; no API key stored. Cross-region inference profiles are resolved
+  automatically from the AWS region prefix (`us.`, `eu.`, `ap.`).
+- **OpenRouter provider** — OpenAI-compatible API backend; set `OPENROUTER_API_KEY` and
+  `provider: openrouter` per agent to use any model on OpenRouter's catalogue.
+- **OpenCode and Goose CLI backends** — Dev Agent can now dispatch to the OpenCode or
+  Goose CLI as alternatives to Claude Code.
+- **Per-agent LLM configuration** — `config.yaml` now has an `agents:` block (replacing
+  the global `llm:` block). Each agent has its own `provider` and `model`. Override at
+  runtime with `HELIX_<AGENT>_PROVIDER` and `HELIX_<AGENT>_MODEL`.
+- **`core/preflight.py`** — startup validation that checks at least one LLM provider key
+  is set (or Bedrock is configured via IAM). Warns on missing optional env vars.
+- **LangSmith tracing (opt-in)** — when `LANGSMITH_API_KEY` and `LANGSMITH_TRACING=true`
+  are set, every `complete()` call is traced with provider, model, and token usage.
+- `openai>=1.55` dependency for the OpenRouter and Ollama backends (replaces the previous
+  httpx-based Ollama implementation).
+
+### Changed
+- `core/llm.py` — unified router now dispatches to seven backends: `anthropic`, `bedrock`,
+  `openrouter`, `ollama`, `claude-code`, `opencode`, `goose`. Anthropic backend retries
+  with `claude-haiku-4-5-20251001` on 529 Overloaded responses.
+- `core/config.py` — `LLMConfig` / `get_llm_config()` replaced by `AgentConfig` /
+  `get_agent_config(agent)`. Added `get_bedrock_region()`.
+- `agents/dev/agent.py` — `complete_tdd(cwd=...)` replaced by `complete(agent="dev", cwd=...)`;
+  provider is now determined by the `dev` agent's config entry.
+- `config.yaml` — `llm:` block replaced by `agents:` block; `settings.aws_bedrock_region`
+  added.
+
+---
+
 ## [1.3.0] — 2026-04-19
 
 ### Added
@@ -72,7 +105,9 @@ Initial public release.
 
 ---
 
-[Unreleased]: https://github.com/88hours/helix-community/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/88hours/helix-community/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/88hours/helix-community/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/88hours/helix-community/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/88hours/helix-community/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/88hours/helix-community/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/88hours/helix-community/releases/tag/v1.0.0
