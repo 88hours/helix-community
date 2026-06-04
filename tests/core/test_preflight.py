@@ -1,6 +1,6 @@
 """Tests for core/preflight.py"""
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from core.config import AgentConfig
 from core.preflight import check_required_env
