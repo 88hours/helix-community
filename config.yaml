@@ -7,24 +7,38 @@
 # All values here can be overridden by environment variables at runtime.
 
 # ---------------------------------------------------------------------------
-# LLM
+# LLM providers — one entry per agent
 # ---------------------------------------------------------------------------
 #
-# provider: "anthropic" (default) or "ollama"
+# provider options:
+#   anthropic   — uses ANTHROPIC_API_KEY, direct Anthropic API
+#   bedrock     — uses AWS IAM credentials (no API key stored), via AnthropicBedrock
+#   openrouter  — uses OPENROUTER_API_KEY, OpenAI-compatible API
+#   ollama      — OpenAI-compatible local inference (no API key required)
+#                 base_url defaults to http://localhost:11434
+#   claude-code — invokes the Claude Code CLI via subprocess (Dev Agent only)
+#   opencode    — invokes the OpenCode CLI via subprocess (Dev Agent only)
+#   goose       — invokes the Goose CLI via subprocess (Dev Agent only)
 #
-# anthropic — uses the Anthropic SDK (ANTHROPIC_API_KEY required)
-#   model:   Anthropic model ID, e.g. "claude-sonnet-4-6"
-#   Overrides: HELIX_PROVIDER, HELIX_MODEL
-#
-# ollama — OpenAI-compatible local inference (no API key required)
-#   model:    Ollama model tag, e.g. "llama3.2", "mistral", "codellama"
-#   base_url: Ollama server URL (default: http://localhost:11434)
-#   Overrides: HELIX_PROVIDER, HELIX_MODEL, HELIX_OLLAMA_BASE_URL
+# Per-agent env var overrides:
+#   HELIX_<AGENT>_PROVIDER   e.g. HELIX_CRASH_HANDLER_PROVIDER=bedrock
+#   HELIX_<AGENT>_MODEL      e.g. HELIX_DEV_MODEL=claude-sonnet-4-6
 
-llm:
-  provider: anthropic           # "anthropic" | "ollama"
-  model: claude-sonnet-4-6
-  ollama_base_url: http://localhost:11434
+agents:
+  crash_handler:
+    provider: anthropic
+    model: claude-haiku-4-5-20251001
+
+  qa:
+    provider: anthropic
+    model: claude-haiku-4-5-20251001
+
+  dev:
+    provider: claude-code
+    model: claude-sonnet-4-6
+
+  # Notifier has no LLM provider — it only sends notifications.
+  notifier: {}
 
 # ---------------------------------------------------------------------------
 # Event bus
@@ -133,6 +147,14 @@ pipeline:
   # On timeout the incident is escalated the same way as exhausted retries.
   # Requires the Claude Code CLI to be installed: https://claude.ai/code
   dev_tdd_timeout: 480
+
+# ---------------------------------------------------------------------------
+# AWS settings
+# ---------------------------------------------------------------------------
+# Override: AWS_BEDROCK_REGION
+
+settings:
+  aws_bedrock_region: us-east-1
 
 # ---------------------------------------------------------------------------
 # Server
