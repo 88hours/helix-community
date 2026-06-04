@@ -3,7 +3,8 @@ import pytest
 from unittest.mock import patch
 
 from core.config import (
-    get_llm_config,
+    get_agent_config,
+    get_bedrock_region,
     get_redis_url,
     get_rollbar_config,
     get_sentry_config,
@@ -12,11 +13,13 @@ from core.config import (
 )
 
 SAMPLE_YAML = {
-    "llm": {
-        "provider": "anthropic",
-        "model": "claude-sonnet-4-6",
-        "ollama_base_url": "http://localhost:11434",
+    "agents": {
+        "crash_handler": {"provider": "anthropic", "model": "claude-haiku-4-5-20251001"},
+        "qa": {"provider": "anthropic", "model": "claude-haiku-4-5-20251001"},
+        "dev": {"provider": "claude-code", "model": "claude-sonnet-4-6"},
+        "notifier": {},
     },
+    "settings": {"aws_bedrock_region": "us-east-1"},
     "redis": {"url_env": "REDIS_URL"},
     "rollbar": {"access_token_env": "ROLLBAR_ACCESS_TOKEN"},
     "sentry": {"webhook_secret_env": "SENTRY_WEBHOOK_SECRET"},
@@ -36,37 +39,62 @@ def mock_yaml():
 
 
 # ---------------------------------------------------------------------------
-# get_llm_config
+# get_agent_config
 # ---------------------------------------------------------------------------
 
-def test_get_llm_config_returns_correct_values():
-    cfg = get_llm_config()
+def test_get_agent_config_crash_handler():
+    cfg = get_agent_config("crash_handler")
+    assert cfg.agent == "crash_handler"
     assert cfg.provider == "anthropic"
+    assert cfg.model == "claude-haiku-4-5-20251001"
+    assert cfg.base_url is None
+
+
+def test_get_agent_config_dev():
+    cfg = get_agent_config("dev")
+    assert cfg.provider == "claude-code"
     assert cfg.model == "claude-sonnet-4-6"
-    assert cfg.ollama_base_url == "http://localhost:11434"
 
 
-def test_get_llm_config_env_var_overrides(monkeypatch):
-    monkeypatch.setenv("HELIX_PROVIDER", "ollama")
-    monkeypatch.setenv("HELIX_MODEL", "llama3.2")
-    monkeypatch.setenv("HELIX_OLLAMA_BASE_URL", "http://localhost:9999")
-    cfg = get_llm_config()
-    assert cfg.provider == "ollama"
-    assert cfg.model == "llama3.2"
-    assert cfg.ollama_base_url == "http://localhost:9999"
+def test_get_agent_config_env_provider_override(monkeypatch):
+    monkeypatch.setenv("HELIX_CRASH_HANDLER_PROVIDER", "bedrock")
+    cfg = get_agent_config("crash_handler")
+    assert cfg.provider == "bedrock"
 
 
-def test_get_llm_config_invalid_provider_raises(monkeypatch):
-    monkeypatch.setenv("HELIX_PROVIDER", "openai")
-    with pytest.raises(ValueError, match="Unknown LLM provider"):
-        get_llm_config()
+def test_get_agent_config_env_model_override(monkeypatch):
+    monkeypatch.setenv("HELIX_QA_MODEL", "claude-sonnet-4-6")
+    cfg = get_agent_config("qa")
+    assert cfg.model == "claude-sonnet-4-6"
 
 
-def test_get_llm_config_missing_model_raises():
-    yaml_no_model = {**SAMPLE_YAML, "llm": {"provider": "anthropic"}}
-    with patch("core.config._load_yaml", return_value=yaml_no_model):
-        with pytest.raises(ValueError, match="No LLM model configured"):
-            get_llm_config()
+def test_get_agent_config_unknown_agent_raises():
+    with pytest.raises(KeyError, match="not found"):
+        get_agent_config("nonexistent")
+
+
+def test_get_agent_config_notifier_no_provider_raises():
+    with pytest.raises(ValueError, match="No provider configured"):
+        get_agent_config("notifier")
+
+
+# ---------------------------------------------------------------------------
+# get_bedrock_region
+# ---------------------------------------------------------------------------
+
+def test_get_bedrock_region_from_yaml():
+    assert get_bedrock_region() == "us-east-1"
+
+
+def test_get_bedrock_region_env_override(monkeypatch):
+    monkeypatch.setenv("AWS_BEDROCK_REGION", "eu-west-1")
+    assert get_bedrock_region() == "eu-west-1"
+
+
+def test_get_bedrock_region_yaml_fallback():
+    yaml_with_region = {**SAMPLE_YAML, "settings": {"aws_bedrock_region": "ap-southeast-1"}}
+    with patch("core.config._load_yaml", return_value=yaml_with_region):
+        assert get_bedrock_region() == "ap-southeast-1"
 
 
 # ---------------------------------------------------------------------------
