@@ -33,7 +33,7 @@ import logging
 import os
 from typing import Optional
 
-from core.config import AgentConfig, get_agent_config
+from core.config import AgentConfig, get_agent_config, get_bedrock_region
 
 # LangSmith tracing — gracefully disabled when the package is not installed
 # or LANGSMITH_TRACING is not set.
@@ -91,7 +91,6 @@ def _get_bedrock_client(region: str):
 async def _complete_bedrock(
     config: AgentConfig, prompt: str, system: str
 ) -> tuple[str, dict]:
-    from core.config import get_bedrock_region
     region = get_bedrock_region()
     bedrock_model = _bedrock_model_id(config.model, region)
     client = _get_bedrock_client(region)
