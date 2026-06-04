@@ -26,7 +26,7 @@ import redis.asyncio as redis
 from agents.dev import prompts
 from core.config import get_github_config
 from core.events import publish
-from core.llm import complete, complete_tdd
+from core.llm import complete
 from core.models import CrashReport, PRResult, QAResult
 from core.state import (
     increment_iterations,
@@ -254,7 +254,7 @@ async def _tdd_loop(
                 extra={"incident_id": incident_id, "iteration": iteration},
             )
 
-            response = await complete_tdd(prompt=prompt, cwd=repo_dir)
+            response = await complete(agent="dev", prompt=prompt, cwd=repo_dir)
             logger.debug(
                 "claude-code response received",
                 extra={"incident_id": incident_id, "iteration": iteration},

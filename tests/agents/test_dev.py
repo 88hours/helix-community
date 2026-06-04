@@ -216,7 +216,7 @@ async def test_tdd_loop_success_first_iteration(crash_report, qa_result, mock_re
          patch("integrations.github.write_file", new=AsyncMock()), \
          patch("integrations.github.commit_and_push", new=AsyncMock()), \
          patch("integrations.github.create_pull_request", new=AsyncMock(return_value=(7, "https://github.com/acme/repo/pull/7"))), \
-         patch("agents.dev.agent.complete_tdd", new=AsyncMock(return_value=TDD_PASSED)), \
+         patch("agents.dev.agent.complete", new=AsyncMock(return_value=TDD_PASSED)), \
          patch("agents.dev.agent._get_changed_files", new=AsyncMock(return_value=["send_error.py"])), \
          patch("tempfile.mkdtemp", return_value="/tmp/helix-dev-test"), \
          patch("shutil.rmtree"):
@@ -249,7 +249,7 @@ async def test_tdd_loop_success_second_iteration(crash_report, qa_result, mock_r
          patch("integrations.github.write_file", new=AsyncMock()), \
          patch("integrations.github.commit_and_push", new=AsyncMock()), \
          patch("integrations.github.create_pull_request", new=AsyncMock(return_value=(8, "https://github.com/acme/repo/pull/8"))), \
-         patch("agents.dev.agent.complete_tdd", new=AsyncMock(side_effect=tdd_responses)), \
+         patch("agents.dev.agent.complete", new=AsyncMock(side_effect=tdd_responses)), \
          patch("agents.dev.agent._get_changed_files", new=AsyncMock(return_value=["send_error.py"])), \
          patch("tempfile.mkdtemp", return_value="/tmp/helix-dev-test"), \
          patch("shutil.rmtree"):
@@ -277,7 +277,7 @@ async def test_tdd_loop_exhausts_all_iterations(crash_report, qa_result, mock_re
          patch("integrations.github.clone_repo", new=AsyncMock()), \
          patch("integrations.github.checkout_branch", new=AsyncMock()), \
          patch("integrations.github.write_file", new=AsyncMock()), \
-         patch("agents.dev.agent.complete_tdd", new=AsyncMock(return_value=TDD_FAILED)), \
+         patch("agents.dev.agent.complete", new=AsyncMock(return_value=TDD_FAILED)), \
          patch("agents.dev.agent._post_failure_comment", new=post_failure), \
          patch("agents.dev.agent._escalate", new=escalate), \
          patch("tempfile.mkdtemp", return_value="/tmp/helix-dev-test"), \
@@ -351,7 +351,7 @@ async def test_tdd_loop_releases_lock_on_success(crash_report, qa_result, mock_r
          patch("integrations.github.write_file", new=AsyncMock()), \
          patch("integrations.github.commit_and_push", new=AsyncMock()), \
          patch("integrations.github.create_pull_request", new=AsyncMock(return_value=(7, "https://github.com/acme/repo/pull/7"))), \
-         patch("agents.dev.agent.complete_tdd", new=AsyncMock(return_value=TDD_PASSED)), \
+         patch("agents.dev.agent.complete", new=AsyncMock(return_value=TDD_PASSED)), \
          patch("agents.dev.agent._get_changed_files", new=AsyncMock(return_value=[])), \
          patch("tempfile.mkdtemp", return_value="/tmp/helix-dev-test"), \
          patch("shutil.rmtree"):
@@ -378,7 +378,7 @@ async def test_tdd_loop_publishes_pr_created_event(crash_report, qa_result, mock
          patch("integrations.github.write_file", new=AsyncMock()), \
          patch("integrations.github.commit_and_push", new=AsyncMock()), \
          patch("integrations.github.create_pull_request", new=AsyncMock(return_value=(7, "https://github.com/acme/repo/pull/7"))), \
-         patch("agents.dev.agent.complete_tdd", new=AsyncMock(return_value=TDD_PASSED)), \
+         patch("agents.dev.agent.complete", new=AsyncMock(return_value=TDD_PASSED)), \
          patch("agents.dev.agent._get_changed_files", new=AsyncMock(return_value=[])), \
          patch("tempfile.mkdtemp", return_value="/tmp/helix-dev-test"), \
          patch("shutil.rmtree"):
