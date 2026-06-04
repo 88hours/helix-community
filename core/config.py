@@ -5,10 +5,9 @@ Reads settings from config.yaml and applies environment variable overrides.
 No secrets are stored in config.yaml — only the names of the env vars that
 hold them.
 
-LLM provider/model overrides:
-    HELIX_PROVIDER           "anthropic" | "ollama"
-    HELIX_MODEL              e.g. HELIX_MODEL=claude-haiku-4-5-20251001 or llama3.2
-    HELIX_OLLAMA_BASE_URL    e.g. http://localhost:11434  (ollama only)
+Agent model/provider overrides:
+    HELIX_<AGENT>_PROVIDER   e.g. HELIX_DEV_PROVIDER=anthropic
+    HELIX_<AGENT>_MODEL      e.g. HELIX_DEV_MODEL=claude-sonnet-4-6
 
 Redis URL:
     REDIS_URL                e.g. redis://localhost:6379
@@ -22,17 +21,18 @@ Integration env vars:
     SLACK_SIGNING_SECRET     Slack app signing secret
 
 Usage:
-    from core.config import get_llm_config, get_redis_url
+    from core.config import get_agent_config, get_redis_url
     from core.config import get_rollbar_config, get_github_config, get_slack_config
 
-    llm = get_llm_config()
+    cfg = get_agent_config("dev")
     url = get_redis_url()
-    gh = get_github_config()
+    gh  = get_github_config()
 """
 
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 import yaml
 
@@ -44,11 +44,12 @@ _CONFIG_PATH = Path(__file__).parent.parent / "config.yaml"
 # ---------------------------------------------------------------------------
 
 @dataclass
-class LLMConfig:
-    """Shared LLM settings used by all agents."""
-    provider: str   # "anthropic" | "ollama"
-    model: str      # model identifier, e.g. "claude-sonnet-4-6" or "llama3.2"
-    ollama_base_url: str  # Ollama server URL (ignored when provider is "anthropic")
+class AgentConfig:
+    """Model and provider settings for a single agent."""
+    agent: str                      # agent name as it appears in config.yaml, e.g. "dev"
+    provider: str                   # "anthropic" | "bedrock" | "openrouter" | "ollama" | "claude-code" | "opencode" | "goose"
+    model: str                      # model identifier, e.g. "claude-sonnet-4-6"
+    base_url: Optional[str] = None  # required when provider = "ollama" (customer-provided)
 
 
 @dataclass
@@ -106,31 +107,54 @@ def _require_env(var: str) -> str:
 # Public API
 # ---------------------------------------------------------------------------
 
-def get_llm_config() -> LLMConfig:
+def get_agent_config(agent: str) -> AgentConfig:
     """
-    Return the shared LLM configuration used by all agents.
+    Return the resolved AgentConfig for the given agent name.
 
     Resolution order (highest wins):
-      1. Environment variables: HELIX_PROVIDER, HELIX_MODEL, HELIX_OLLAMA_BASE_URL
-      2. config.yaml: llm.provider, llm.model, llm.ollama_base_url
+      1. Environment variable  HELIX_<AGENT>_PROVIDER / HELIX_<AGENT>_MODEL
+      2. config.yaml entry for the agent
+
+    Args:
+        agent: Agent name matching a key under `agents:` in config.yaml,
+               e.g. "crash_handler", "qa", "dev".
+
+    Raises:
+        FileNotFoundError: config.yaml does not exist.
+        KeyError: The agent name is not defined in config.yaml.
+        ValueError: The resolved provider or model is empty.
     """
     raw = _load_yaml()
-    llm = raw.get("llm", {})
 
-    provider = os.environ.get("HELIX_PROVIDER") or llm.get("provider", "anthropic")
-    if provider not in ("anthropic", "ollama"):
-        raise ValueError(f"Unknown LLM provider '{provider}'. Must be 'anthropic' or 'ollama'.")
+    agents = raw.get("agents", {})
+    if agent not in agents:
+        available = ", ".join(agents.keys())
+        raise KeyError(f"Agent '{agent}' not found in config.yaml. Available: {available}")
 
-    model = os.environ.get("HELIX_MODEL") or llm.get("model", "")
-    if not model:
-        raise ValueError("No LLM model configured. Set llm.model in config.yaml or HELIX_MODEL env var.")
+    agent_yaml = agents[agent] or {}
+    env_prefix = f"HELIX_{agent.upper()}_"
 
-    ollama_base_url = (
-        os.environ.get("HELIX_OLLAMA_BASE_URL")
-        or llm.get("ollama_base_url", "http://localhost:11434")
+    provider = os.environ.get(f"{env_prefix}PROVIDER") or agent_yaml.get("provider", "")
+    model = os.environ.get(f"{env_prefix}MODEL") or agent_yaml.get("model", "")
+    base_url = (
+        os.environ.get(f"{env_prefix}BASE_URL")
+        or os.environ.get("HELIX_OLLAMA_BASE_URL")
+        or agent_yaml.get("base_url")
     )
 
-    return LLMConfig(provider=provider, model=model, ollama_base_url=ollama_base_url)
+    if not provider:
+        raise ValueError(f"No provider configured for agent '{agent}'")
+    if not model:
+        raise ValueError(f"No model configured for agent '{agent}'")
+
+    return AgentConfig(agent=agent, provider=provider, model=model, base_url=base_url)
+
+
+def get_bedrock_region() -> str:
+    """Return the AWS region for Bedrock calls. Reads AWS_BEDROCK_REGION env var, falls back to config.yaml settings.aws_bedrock_region, then us-east-1."""
+    raw = _load_yaml()
+    yaml_region = raw.get("settings", {}).get("aws_bedrock_region", "us-east-1")
+    return os.environ.get("AWS_BEDROCK_REGION", yaml_region)
 
 
 def get_redis_url() -> str:
