@@ -29,11 +29,33 @@ Compute the new version from the current one using semver rules, or use the cust
 Confirm with the user before proceeding:
 > "Releasing **v{NEW_VERSION}** (was {CURRENT_VERSION}). Continue? [y/N]"
 
-## Step 3 — Update `pyproject.toml`
+## Step 3 — Run linter and tests
+
+Before touching any files, verify the codebase is clean.
+
+**Linter:**
+```bash
+.venv/bin/ruff check .
+```
+If ruff reports errors, stop and tell the user:
+> "Linter errors found. Fix them before releasing."
+Show the errors. Do not proceed until they are resolved.
+
+**Unit tests:**
+```bash
+.venv/bin/python3 -m pytest tests/ -q
+```
+If any tests fail, stop and tell the user:
+> "Tests are failing. Fix them before releasing."
+Show the failure summary. Do not proceed until all tests pass.
+
+Only continue to Step 4 when both linter and tests are clean.
+
+## Step 4 — Update `pyproject.toml`
 
 Edit `pyproject.toml`, replacing the `version = "..."` line under `[project]` with the new version.
 
-## Step 4 — Update `CHANGELOG.md`
+## Step 5 — Update `CHANGELOG.md`
 
 Read `CHANGELOG.md`.
 
@@ -52,7 +74,7 @@ Read `CHANGELOG.md`.
    Where `{TODAY_DATE}` is today's date in `YYYY-MM-DD` format.
 4. Keep all content that was under `[Unreleased]` under the new version heading.
 
-## Step 5 — Commit and tag
+## Step 6 — Commit and tag
 
 Stage both files and create a commit:
 ```
@@ -65,7 +87,7 @@ Then create an annotated tag:
 git tag -a "v{NEW_VERSION}" -m "Release v{NEW_VERSION}"
 ```
 
-## Step 6 — Push (optional)
+## Step 7 — Push (optional)
 
 Ask the user:
 > "Push the commit and tag to origin? [y/N]"
@@ -76,7 +98,7 @@ git push origin main
 git push origin "v{NEW_VERSION}"
 ```
 
-## Step 7 — GitHub release (optional)
+## Step 8 — GitHub release (optional)
 
 Ask the user:
 > "Create a GitHub release for v{NEW_VERSION}? [y/N]"
@@ -95,6 +117,8 @@ If `gh` is not installed, tell the user to install the GitHub CLI or create the 
 Print a summary:
 ```
 Released v{NEW_VERSION}
+  ruff            clean
+  tests           N passed
   pyproject.toml  updated
   CHANGELOG.md    updated
   git tag         v{NEW_VERSION}
